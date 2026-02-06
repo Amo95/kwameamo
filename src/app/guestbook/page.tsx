@@ -33,54 +33,56 @@ export default function GuestbookPage() {
   };
 
   return (
-    <section className="flex flex-col gap-6 sm:gap-8 animate-fade-in-up">
-      {/* Header */}
-      <div className="text-center">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
-          The Wall
-        </h1>
-        <p className="mt-2 text-[14px] text-muted sm:text-[15px]">
-          Leave a note, say hi{" "}
-          <span role="img" aria-label="wave">
-            👋
-          </span>
-        </p>
-      </div>
-
-      {/* Loading state */}
-      {isLoading && (
-        <div className="flex justify-center py-8 sm:py-12">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-foreground" />
+    <>
+      <section className="flex flex-col gap-6 sm:gap-8 animate-fade-in-up">
+        {/* Header */}
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+            The Wall
+          </h1>
+          <p className="mt-2 text-[14px] text-muted sm:text-[15px]">
+            Leave a note, say hi{" "}
+            <span role="img" aria-label="wave">
+              👋
+            </span>
+          </p>
         </div>
-      )}
 
-      {/* Notes grid */}
-      {!isLoading && (
-        <>
-          {notes.length === 0 ? (
-            <div className="py-8 sm:py-12 text-center">
-              <p className="text-[14px] text-muted sm:text-[15px]">
-                No notes yet. Be the first to leave one!
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-              {notes.map((note) => (
-                <StickyNote
-                  key={note.id}
-                  note={note}
-                  rotation={getRandomRotation()}
-                />
-              ))}
-            </div>
-          )}
-        </>
-      )}
+        {/* Loading state */}
+        {isLoading && (
+          <div className="flex justify-center py-8 sm:py-12">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-foreground" />
+          </div>
+        )}
 
-      {/* Floating Add Note Button */}
+        {/* Notes grid */}
+        {!isLoading && (
+          <>
+            {notes.length === 0 ? (
+              <div className="py-8 sm:py-12 text-center">
+                <p className="text-[14px] text-muted sm:text-[15px]">
+                  No notes yet. Be the first to leave one!
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+                {notes.map((note) => (
+                  <StickyNote
+                    key={note.id}
+                    note={note}
+                    rotation={getRandomRotation()}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+      </section>
+
+      {/* Floating Add Note Button - Fixed to viewport */}
       <button
         onClick={() => setIsModalOpen(true)}
-        className="fixed bottom-8 right-8 flex h-14 w-14 items-center justify-center rounded-full bg-gray-900 text-white shadow-lg transition-all hover:scale-110 hover:shadow-xl dark:bg-gray-100 dark:text-gray-900 sm:h-16 sm:w-16"
+        className="fixed bottom-20 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gray-900 text-white shadow-lg transition-all hover:scale-110 hover:shadow-xl dark:bg-gray-100 dark:text-gray-900 sm:bottom-6 sm:h-16 sm:w-16"
         aria-label="Add note"
       >
         <svg
@@ -99,8 +101,8 @@ export default function GuestbookPage() {
         </svg>
       </button>
 
-      {/* Add Note Modal */}
+      {/* Add Note Modal - Fixed to viewport */}
       <AddNoteModal isOpen={isModalOpen} onClose={handleModalClose} />
-    </section>
+    </>
   );
 }
