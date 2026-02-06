@@ -45,7 +45,7 @@ const experiences = [
   {
     company: "Infusi Technologies ltd",
     role: "Co-Founder & Lead Backend Engineer",
-    period: "2022 -- Present",
+    period: "2025 -- Present",
     current: false,
     description: [
       "Co-founded a software agency building mobile and web platforms for clients across Ghana.",

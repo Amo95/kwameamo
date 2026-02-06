@@ -81,8 +81,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} antialiased`}>
         <ThemeProvider>
-          <div className="mx-auto max-w-3xl px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-            <Navigation />
+          <Navigation />
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <main className="py-8 sm:py-12 lg:py-16">{children}</main>
             <Footer />
           </div>
