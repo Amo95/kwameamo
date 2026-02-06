@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Configure class-based dark mode instead of media query */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  /* Color tokens — Tailwind v4 auto-generates utilities from these */
+  --color-background: #ffffff;
+  --color-foreground: #111111;
+  --color-muted: #666666;
+  --color-border: #e5e5e5;
+  --color-accent: #1f4e79;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::selection {
+    background-color: var(--color-foreground);
+    color: var(--color-background);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.dark {
+  --color-background: #0a0a0a;
+  --color-foreground: #f5f5f5;
+  --color-muted: #a3a3a3;
+  --color-border: #262626;
+  --color-accent: #60a5fa;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUnderline {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeInUp 0.4s ease-out forwards;
+  }
+}
+
+@layer components {
+  .nav-link {
+    position: relative;
+    display: inline-block;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--color-foreground);
+    transition: width 0.2s ease;
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
 }
