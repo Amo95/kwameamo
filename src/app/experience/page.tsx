@@ -11,7 +11,7 @@ const experiences = [
   {
     company: "Tunic Pay",
     role: "Backend Software Engineer",
-    period: "Dec 2024 -- Present",
+    period: "Dec 2025 -- Present",
     current: true,
     description: [
       "Designed and built a fraud detection orchestrator using Kotlin, Python, and Temporal.",
