@@ -51,7 +51,7 @@ const projects = [
       "State machine workflows for multi-step verification processes",
       "RESTful API serving both web and mobile clients",
     ],
-    link: "https://github.com/amo95",
+    link: "https://anyigba.co",
   },
   {
     title: "cedAI",
@@ -64,7 +64,7 @@ const projects = [
       "Audio feedback for accessibility",
       "Trained on custom dataset of Ghanaian banknotes",
     ],
-    link: "https://github.com/amo95",
+    link: "https://github.com/cedai-gh/MOBILE-DEV",
   },
   {
     title: "GMoney Middleware",
@@ -72,7 +72,7 @@ const projects = [
       "A payment orchestration layer powering peer-to-peer transfers, bank-to-wallet flows, and interbank settlements across multiple payment providers in Ghana.",
     tech: ["Java", "Spring Boot", "AWS", "PostgreSQL", "CloudWatch"],
     features: [
-      "Mastercard and Brij API integrations",
+      "Mastercard and Brij API integrations for inbound and outbound calls",
       "GhIPSS interoperability for cross-bank transfers",
       "Loyalty points system for transaction rewards",
       "Production observability with AWS CloudWatch dashboards",
