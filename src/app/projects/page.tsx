@@ -9,6 +9,19 @@ export const metadata: Metadata = {
 
 const projects = [
   {
+    title: "Invoica",
+    description:
+      "A web-based invoicing tool for freelancers and small businesses. Create professional invoices, preview and download as PDF, customize designs, and send directly — no account required.",
+    tech: ["Next.js", "React", "TypeScript", "Vercel"],
+    features: [
+      "Multi-currency support (USD, GHS, EUR, GBP, NGN and more)",
+      "PDF generation with live preview and direct download",
+      "Customizable color schemes and invoice layouts",
+      "Guest mode — no registration required to create invoices",
+    ],
+    link: "https://invoica-livid.vercel.app/",
+  },
+  {
     title: "AI Educational Chat Platform",
     description:
       "An AI-powered educational chat platform with support for Claude AI and Wolfram Alpha integration. Features OAuth2 authentication and comprehensive API documentation.",
