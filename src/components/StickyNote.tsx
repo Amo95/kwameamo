@@ -58,12 +58,22 @@ export default function StickyNote({ note, rotation }: StickyNoteProps) {
       setLiked(false);
       setLikeCount((c) => Math.max(c - 1, 0));
       removeLikedNote(note.id);
-      await unlikeNote(note.id);
+      const result = await unlikeNote(note.id);
+      if (result.error) {
+        setLiked(true);
+        setLikeCount((c) => c + 1);
+        saveLikedNote(note.id);
+      }
     } else {
       setLiked(true);
       setLikeCount((c) => c + 1);
       saveLikedNote(note.id);
-      await likeNote(note.id);
+      const result = await likeNote(note.id);
+      if (result.error) {
+        setLiked(false);
+        setLikeCount((c) => Math.max(c - 1, 0));
+        removeLikedNote(note.id);
+      }
     }
   };
 
