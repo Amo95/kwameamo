@@ -69,6 +69,17 @@ export async function generateMetadata(): Promise<Metadata> {
       description: `Backend Software Engineer | Fintech | ${regionShortText}`,
       images: ['/og-image.png'],
     },
+    keywords: [
+      'backend software engineer',
+      'fintech developer',
+      'investment banking technology',
+      'Java developer',
+      'Spring Boot',
+      'software engineer portfolio',
+      'James Kwame Amo',
+    ],
+    robots: { index: true, follow: true },
+    alternates: { canonical: 'https://kwameamo.com' },
   };
 }
 
