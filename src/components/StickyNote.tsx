@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { GuestbookNote } from "@/lib/supabase";
+import { likeNote, unlikeNote } from "@/app/guestbook/actions";
 
 const PASTEL_COLORS = {
   yellow: "bg-yellow-200 dark:bg-yellow-300",
@@ -11,6 +12,28 @@ const PASTEL_COLORS = {
   purple: "bg-purple-200 dark:bg-purple-300",
 };
 
+function getLikedNotes(): string[] {
+  if (typeof window === "undefined") return [];
+  try {
+    return JSON.parse(localStorage.getItem("liked-notes") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveLikedNote(noteId: string) {
+  const liked = getLikedNotes();
+  if (!liked.includes(noteId)) {
+    liked.push(noteId);
+    localStorage.setItem("liked-notes", JSON.stringify(liked));
+  }
+}
+
+function removeLikedNote(noteId: string) {
+  const liked = getLikedNotes().filter((id) => id !== noteId);
+  localStorage.setItem("liked-notes", JSON.stringify(liked));
+}
+
 interface StickyNoteProps {
   note: GuestbookNote;
   rotation: number;
@@ -18,6 +41,31 @@ interface StickyNoteProps {
 
 export default function StickyNote({ note, rotation }: StickyNoteProps) {
   const [isDragging, setIsDragging] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(note.likes ?? 0);
+  const [animating, setAnimating] = useState(false);
+
+  useEffect(() => {
+    setLiked(getLikedNotes().includes(note.id));
+  }, [note.id]);
+
+  const handleLike = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setAnimating(true);
+    setTimeout(() => setAnimating(false), 300);
+
+    if (liked) {
+      setLiked(false);
+      setLikeCount((c) => Math.max(c - 1, 0));
+      removeLikedNote(note.id);
+      await unlikeNote(note.id);
+    } else {
+      setLiked(true);
+      setLikeCount((c) => c + 1);
+      saveLikedNote(note.id);
+      await likeNote(note.id);
+    }
+  };
 
   const colorClass =
     PASTEL_COLORS[note.colour as keyof typeof PASTEL_COLORS] ||
@@ -66,6 +114,29 @@ export default function StickyNote({ note, rotation }: StickyNoteProps) {
             </p>
             <p className="text-[10px] text-gray-600 sm:text-[11px]">{formattedDate}</p>
           </div>
+
+          <button
+            onClick={handleLike}
+            className={`flex items-center gap-1 transition-transform duration-200 ${
+              "cursor-pointer hover:scale-110"
+            } ${animating ? "scale-125" : ""}`}
+            aria-label={liked ? "Unlike this note" : "Like this note"}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill={liked ? "#ef4444" : "none"}
+              stroke={liked ? "#ef4444" : "#6b7280"}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="transition-colors duration-200"
+            >
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+            <span className="text-[11px] text-gray-600">{likeCount}</span>
+          </button>
         </div>
       </div>
 

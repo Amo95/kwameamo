@@ -11,4 +11,5 @@ export type GuestbookNote = {
   message: string;
   colour: string;
   created_at: string;
+  likes: number;
 };
