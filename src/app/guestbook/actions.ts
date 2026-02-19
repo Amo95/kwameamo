@@ -1,10 +1,10 @@
 "use server";
 
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 import { revalidatePath } from "next/cache";
 
 export async function getNotes() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("guestbook")
     .select("*")
     .order("created_at", { ascending: false });
@@ -30,7 +30,7 @@ export async function addNote(formData: FormData) {
     return { error: "Message must be 100 characters or less" };
   }
 
-  const { error } = await supabase.from("guestbook").insert([
+  const { error } = await supabaseAdmin.from("guestbook").insert([
     {
       name,
       message,
@@ -48,7 +48,7 @@ export async function addNote(formData: FormData) {
 }
 
 export async function likeNote(noteId: string) {
-  const { data: note, error: fetchError } = await supabase
+  const { data: note, error: fetchError } = await supabaseAdmin
     .from("guestbook")
     .select("likes")
     .eq("id", noteId)
@@ -60,7 +60,7 @@ export async function likeNote(noteId: string) {
   }
 
   const newLikes = (note.likes ?? 0) + 1;
-  const { error: updateError } = await supabase
+  const { error: updateError } = await supabaseAdmin
     .from("guestbook")
     .update({ likes: newLikes })
     .eq("id", noteId);
@@ -75,7 +75,7 @@ export async function likeNote(noteId: string) {
 }
 
 export async function unlikeNote(noteId: string) {
-  const { data: note, error: fetchError } = await supabase
+  const { data: note, error: fetchError } = await supabaseAdmin
     .from("guestbook")
     .select("likes")
     .eq("id", noteId)
@@ -87,7 +87,7 @@ export async function unlikeNote(noteId: string) {
   }
 
   const newLikes = Math.max((note.likes ?? 0) - 1, 0);
-  const { error: updateError } = await supabase
+  const { error: updateError } = await supabaseAdmin
     .from("guestbook")
     .update({ likes: newLikes })
     .eq("id", noteId);
