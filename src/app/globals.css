@@ -14,6 +14,11 @@
   --color-muted: #666666;
   --color-border: #e5e5e5;
   --color-accent: #1f4e79;
+  --color-contrib-none: #ebedf0;
+  --color-contrib-first_quartile: #9be9a8;
+  --color-contrib-second_quartile: #40c463;
+  --color-contrib-third_quartile: #30a14e;
+  --color-contrib-fourth_quartile: #216e39;
 }
 
 @layer base {
@@ -36,6 +41,11 @@
   --color-muted: #a3a3a3;
   --color-border: #262626;
   --color-accent: #60a5fa;
+  --color-contrib-none: #161b22;
+  --color-contrib-first_quartile: #0e4429;
+  --color-contrib-second_quartile: #006d32;
+  --color-contrib-third_quartile: #26a641;
+  --color-contrib-fourth_quartile: #39d353;
 }
 
 /* Animations */
