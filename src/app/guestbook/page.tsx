@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { Metadata } from "next";
 import StickyNote from "@/components/StickyNote";
 import AddNoteModal from "@/components/AddNoteModal";
+import Skeleton from "@/components/Skeleton";
 import { getNotes } from "./actions";
 import type { GuestbookNote } from "@/lib/supabase";
 
@@ -50,8 +51,18 @@ export default function GuestbookPage() {
 
         {/* Loading state */}
         {isLoading && (
-          <div className="flex justify-center py-8 sm:py-12">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-foreground" />
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="rounded-lg border border-border p-4 sm:p-5">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="mt-2 h-3 w-full" />
+                <Skeleton className="mt-1.5 h-3 w-5/6" />
+                <div className="mt-4 flex items-center justify-between">
+                  <Skeleton className="h-3 w-20" />
+                  <Skeleton className="h-3 w-8" />
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
