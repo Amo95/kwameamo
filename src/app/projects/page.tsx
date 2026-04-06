@@ -9,6 +9,19 @@ export const metadata: Metadata = {
 
 const projects = [
   {
+    title: "ShowUp",
+    description:
+      "A location-based habit tracker that rewards you for showing up. Uses geofencing to automatically check you in when you arrive at a place — gym, church, library — rather than logging specific activities. Built around the idea that consistency matters more than performance.",
+    tech: ["Flutter", "Dart", "Supabase", "Riverpod", "Isar", "Geofencing"],
+    features: [
+      "Geofence-based automatic check-ins at saved locations",
+      "GitHub-style contribution grid for streak and consistency visualization",
+      "Carousel-style onboarding with Supabase authentication",
+      "Offline-first with Isar local storage",
+    ],
+    link: "https://showuppp.app",
+  },
+  {
     title: "Invoica",
     description:
       "A web-based invoicing tool for freelancers and small businesses. Create professional invoices, preview and download as PDF, customize designs, and send directly — no account required.",
