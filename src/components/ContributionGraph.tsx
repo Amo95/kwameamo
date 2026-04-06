@@ -42,7 +42,7 @@ export default function ContributionGraph({
         {totalContributions.toLocaleString()} contributions in the last year
       </p>
 
-      <div className="relative mt-3 overflow-x-auto">
+      <div className="relative mt-3 overflow-x-auto" data-graph>
         <div
           className="grid gap-[3px]"
           style={{
@@ -63,11 +63,15 @@ export default function ContributionGraph({
                   backgroundColor: `var(--color-contrib-${day.contributionLevel.toLowerCase()})`,
                 }}
                 onMouseEnter={(e) => {
-                  const rect = e.currentTarget.getBoundingClientRect();
+                  const cell = e.currentTarget;
+                  const container = cell.closest("[data-graph]") as HTMLElement;
+                  if (!container) return;
+                  const containerRect = container.getBoundingClientRect();
+                  const cellRect = cell.getBoundingClientRect();
                   setTooltip({
                     text: `${day.contributionCount} contribution${day.contributionCount !== 1 ? "s" : ""} on ${formatDate(day.date)}`,
-                    x: rect.left + rect.width / 2,
-                    y: rect.top,
+                    x: cellRect.left - containerRect.left + cellRect.width / 2,
+                    y: cellRect.top - containerRect.top,
                   });
                 }}
                 onMouseLeave={() => setTooltip(null)}
@@ -78,7 +82,7 @@ export default function ContributionGraph({
 
         {tooltip && (
           <div
-            className="fixed z-50 rounded-md bg-foreground px-2 py-1 text-[11px] text-background shadow-lg pointer-events-none"
+            className="absolute z-50 rounded-md bg-foreground px-2 py-1 text-[11px] text-background shadow-lg pointer-events-none whitespace-nowrap"
             style={{
               left: tooltip.x,
               top: tooltip.y - 32,
