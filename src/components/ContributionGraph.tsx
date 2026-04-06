@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 interface ContributionDay {
   date: string;
@@ -35,6 +36,11 @@ export default function ContributionGraph({
     x: number;
     y: number;
   } | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <div>
@@ -42,7 +48,7 @@ export default function ContributionGraph({
         {totalContributions.toLocaleString()} contributions in the last year
       </p>
 
-      <div className="relative mt-3 overflow-x-auto" data-graph>
+      <div className="mt-3 overflow-x-auto">
         <div
           className="grid gap-[3px]"
           style={{
@@ -63,15 +69,11 @@ export default function ContributionGraph({
                   backgroundColor: `var(--color-contrib-${day.contributionLevel.toLowerCase()})`,
                 }}
                 onMouseEnter={(e) => {
-                  const cell = e.currentTarget;
-                  const container = cell.closest("[data-graph]") as HTMLElement;
-                  if (!container) return;
-                  const containerRect = container.getBoundingClientRect();
-                  const cellRect = cell.getBoundingClientRect();
+                  const rect = e.currentTarget.getBoundingClientRect();
                   setTooltip({
                     text: `${day.contributionCount} contribution${day.contributionCount !== 1 ? "s" : ""} on ${formatDate(day.date)}`,
-                    x: cellRect.left - containerRect.left + cellRect.width / 2,
-                    y: cellRect.top - containerRect.top,
+                    x: rect.left + rect.width / 2 + window.scrollX,
+                    y: rect.top + window.scrollY,
                   });
                 }}
                 onMouseLeave={() => setTooltip(null)}
@@ -79,20 +81,25 @@ export default function ContributionGraph({
             ))
           )}
         </div>
-
-        {tooltip && (
-          <div
-            className="absolute z-50 rounded-md bg-foreground px-2 py-1 text-[11px] text-background shadow-lg pointer-events-none whitespace-nowrap"
-            style={{
-              left: tooltip.x,
-              top: tooltip.y - 32,
-              transform: "translateX(-50%)",
-            }}
-          >
-            {tooltip.text}
-          </div>
-        )}
       </div>
+
+      {mounted && tooltip && createPortal(
+        <div
+          className="pointer-events-none whitespace-nowrap rounded-md px-2 py-1 text-[11px] shadow-lg"
+          style={{
+            position: "absolute",
+            left: tooltip.x,
+            top: tooltip.y - 32,
+            transform: "translateX(-50%)",
+            zIndex: 9999,
+            backgroundColor: "var(--color-foreground)",
+            color: "var(--color-background)",
+          }}
+        >
+          {tooltip.text}
+        </div>,
+        document.body
+      )}
     </div>
   );
 }
