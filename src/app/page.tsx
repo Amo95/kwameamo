@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { getVisitorRegion, getBadgeText } from "@/lib/geo";
+import { fetchContributions } from "@/lib/github";
+import ContributionGraph from "@/components/ContributionGraph";
 
 export default async function Home() {
   const region = await getVisitorRegion();
   const badgeText = getBadgeText(region);
+  const contributions = await fetchContributions("amo95");
   return (
     <section className="flex flex-col gap-6 sm:gap-8 animate-fade-in-up">
       {/* Hero */}
@@ -92,6 +95,28 @@ export default async function Home() {
           verification in Ghana.
         </p>
       </div>
+
+      {contributions && (
+        <div>
+          <h2 className="text-[14px] font-semibold uppercase tracking-wider text-muted">
+            GitHub
+          </h2>
+          <div className="mt-3">
+            <ContributionGraph
+              totalContributions={contributions.totalContributions}
+              weeks={contributions.weeks}
+            />
+          </div>
+          <Link
+            href="https://github.com/amo95"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-block text-[13px] text-muted transition-colors hover:text-foreground sm:text-[14px]"
+          >
+            View profile &rarr;
+          </Link>
+        </div>
+      )}
     </section>
   );
 }
