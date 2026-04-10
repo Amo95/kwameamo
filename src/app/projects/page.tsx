@@ -22,6 +22,19 @@ const projects = [
     link: "https://showuppp.app",
   },
   {
+    title: "SupaWake",
+    description:
+      "A lightweight CLI tool that prevents Supabase free-tier databases from auto-pausing due to inactivity. Automatically pings your projects on a configurable schedule, with support for multi-project management and failure notifications.",
+    tech: ["Node.js", "GitHub Actions", "Slack", "Discord"],
+    features: [
+      "Scheduled pinging with customizable cron intervals (default: every 3 days)",
+      "Multi-project management from a single configuration",
+      "Failure notifications via Slack, Discord, or ntfy.sh",
+      "GitHub Actions workflow templates for free serverless scheduling",
+    ],
+    link: "https://amo95.github.io/supawake/",
+  },
+  {
     title: "Invoica",
     description:
       "A web-based invoicing tool for freelancers and small businesses. Create professional invoices, preview and download as PDF, customize designs, and send directly — no account required.",
