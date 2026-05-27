@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ProjectCard from "@/components/ProjectCard";
+import { getScreenshotUrl } from "@/lib/screenshot";
 
 export const metadata: Metadata = {
   title: "Projects - James Kwame Amo",
@@ -48,24 +49,31 @@ const projects = [
     link: "https://invoica-livid.vercel.app/",
   },
   {
-    title: "AI Educational Chat Platform",
+    title: "Spiidi AI",
     description:
-      "An AI-powered educational chat platform with support for Claude AI and Wolfram Alpha integration. Features OAuth2 authentication and comprehensive API documentation.",
+      "A full-stack AI-powered educational chat platform built end-to-end for a client — logo, UI design, marketing website, backend API, database, and mobile app. Uses Spring AI with Claude as the core chat model, Wolfram Alpha as an autonomous tool for computation, and OpenAI for voice features.",
     tech: [
       "Spring Boot 4.0.1",
+      "Spring AI",
       "Java 21",
       "PostgreSQL",
+      "React",
+      "Expo / React Native",
       "Claude AI",
       "Wolfram Alpha",
-      "Springdoc OpenAPI 2.7.0",
+      "OpenAI",
+      "Stripe",
+      "Supabase",
     ],
     features: [
-      "JWT authentication with OAuth2 support (Google, Microsoft)",
-      "Claude AI integration for conversational learning",
-      "Wolfram Alpha integration for computational queries",
-      "RESTful API with OpenAPI documentation",
+      "End-to-end product delivery — logo, UI design, website, API, and mobile app",
+      "Spring AI ChatClient with Claude, Wolfram Alpha tool use, and conversation memory",
+      "Multimodal chat with image and PDF attachments via Supabase storage",
+      "Voice input (speech-to-text) and text-to-speech with streaming audio",
+      "Subscription tiers with Stripe, usage limits, and gamification system",
+      "Anonymous trial chat with IP-based rate limiting and session transfer on signup",
     ],
-    link: "https://github.com/amo95",
+    link: "https://spiidi.ai",
   },
   {
     title: "Logiciel Loans - WhatsApp Flow Integration",
@@ -140,6 +148,7 @@ export default function Projects() {
             tech={project.tech}
             features={project.features}
             link={project.link}
+            image={project.link ? getScreenshotUrl(project.link) : undefined}
           />
         ))}
       </div>
