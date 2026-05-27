@@ -67,7 +67,7 @@ export default async function Contact() {
       {/* Download CV */}
       <div className="border-t border-border pt-8">
         <Link
-          href="/james-amo-cv.pdf"
+          href={region === "EU" ? "/james-amo-cv.pdf" : "/james-amo-cv-non-europe.pdf"}
           className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-[14px] font-medium transition-colors border border-[#111111] text-[#111111] bg-white hover:bg-gray-100 dark:border-[#e5e5e5] dark:text-[#e5e5e5] dark:bg-transparent dark:hover:bg-white/5"
         >
           <svg
