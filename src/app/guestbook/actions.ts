@@ -21,6 +21,7 @@ export async function addNote(formData: FormData) {
   const name = formData.get("name") as string;
   const message = formData.get("message") as string;
   const colour = formData.get("colour") as string;
+  const avatar = (formData.get("avatar") as string) || null;
 
   if (!name || !message) {
     return { error: "Name and message are required" };
@@ -35,6 +36,7 @@ export async function addNote(formData: FormData) {
       name,
       message,
       colour,
+      avatar,
     },
   ]);
 

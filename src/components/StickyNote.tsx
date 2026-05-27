@@ -118,11 +118,20 @@ export default function StickyNote({ note, rotation }: StickyNoteProps) {
         </div>
 
         <div className="flex items-end justify-between">
-          <div>
-            <p className="text-[12px] font-semibold text-gray-700 sm:text-[13px]">
-              — {note.name}
-            </p>
-            <p className="text-[10px] text-gray-600 sm:text-[11px]">{formattedDate}</p>
+          <div className="flex items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`https://api.navii.dev/avatar/${encodeURIComponent(note.avatar || note.name)}?size=24`}
+              alt=""
+              className="h-6 w-6 shrink-0 rounded-full"
+              loading="lazy"
+            />
+            <div>
+              <p className="text-[12px] font-semibold text-gray-700 sm:text-[13px]">
+                {note.name}
+              </p>
+              <p className="text-[10px] text-gray-600 sm:text-[11px]">{formattedDate}</p>
+            </div>
           </div>
 
           <button

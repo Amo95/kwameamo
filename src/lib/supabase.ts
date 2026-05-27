@@ -12,4 +12,5 @@ export type GuestbookNote = {
   colour: string;
   created_at: string;
   likes: number;
+  avatar: string | null;
 };

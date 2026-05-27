@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useMemo } from "react";
 import { addNote } from "@/app/guestbook/actions";
 
 const PASTEL_COLORS = [
@@ -10,6 +10,14 @@ const PASTEL_COLORS = [
   { name: "green", class: "bg-green-200" },
   { name: "purple", class: "bg-purple-200" },
 ];
+
+const AVATAR_COUNT = 8;
+
+function generateAvatarSeeds() {
+  return Array.from({ length: AVATAR_COUNT }, () =>
+    Math.random().toString(36).substring(2, 10)
+  );
+}
 
 interface AddNoteModalProps {
   isOpen: boolean;
@@ -23,6 +31,9 @@ export default function AddNoteModal({ isOpen, onClose }: AddNoteModalProps) {
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
 
+  const avatarSeeds = useMemo(() => generateAvatarSeeds(), [isOpen]);
+  const [selectedAvatar, setSelectedAvatar] = useState(avatarSeeds[0]);
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,6 +42,7 @@ export default function AddNoteModal({ isOpen, onClose }: AddNoteModalProps) {
 
     const formData = new FormData(e.currentTarget);
     formData.set("colour", selectedColor);
+    formData.set("avatar", selectedAvatar);
 
     startTransition(async () => {
       const result = await addNote(formData);
@@ -80,6 +92,35 @@ export default function AddNoteModal({ isOpen, onClose }: AddNoteModalProps) {
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          {/* Avatar picker */}
+          <div>
+            <label className="mb-2 block text-[13px] font-medium text-foreground">
+              Pick an Avatar
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {avatarSeeds.map((seed) => (
+                <button
+                  key={seed}
+                  type="button"
+                  onClick={() => setSelectedAvatar(seed)}
+                  className={`h-10 w-10 rounded-full border-2 overflow-hidden transition-all ${
+                    selectedAvatar === seed
+                      ? "border-foreground scale-110"
+                      : "border-border hover:scale-105"
+                  }`}
+                  aria-label="Select avatar"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`https://api.navii.dev/avatar/${seed}?size=40`}
+                    alt=""
+                    className="h-full w-full"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Name input */}
           <div>
             <label
