@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import ProjectCard from "@/components/ProjectCard";
-import { getScreenshotUrl } from "@/lib/screenshot";
 
 export const metadata: Metadata = {
   title: "Projects - James Kwame Amo",
@@ -21,6 +20,7 @@ const projects = [
       "Offline-first with Isar local storage",
     ],
     link: "https://showuppp.app",
+    image: "/projects/showup.webp",
   },
   {
     title: "SupaWake",
@@ -34,6 +34,7 @@ const projects = [
       "GitHub Actions workflow templates for free serverless scheduling",
     ],
     link: "https://amo95.github.io/supawake/",
+    image: "/projects/supawake.webp",
   },
   {
     title: "Invoica",
@@ -47,6 +48,7 @@ const projects = [
       "Guest mode — no registration required to create invoices",
     ],
     link: "https://invoica-livid.vercel.app/",
+    image: "/projects/invoica.webp",
   },
   {
     title: "Spiidi AI",
@@ -74,6 +76,7 @@ const projects = [
       "Anonymous trial chat with IP-based rate limiting and session transfer on signup",
     ],
     link: "https://spiidi.ai",
+    image: "/projects/spiidi.webp",
   },
   {
     title: "Logiciel Loans - WhatsApp Flow Integration",
@@ -148,7 +151,7 @@ export default function Projects() {
             tech={project.tech}
             features={project.features}
             link={project.link}
-            image={project.link ? getScreenshotUrl(project.link) : undefined}
+            image={project.image}
           />
         ))}
       </div>
