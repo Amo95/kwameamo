@@ -105,16 +105,10 @@ export default async function Home() {
             <ContributionGraph
               totalContributions={contributions.totalContributions}
               weeks={contributions.weeks}
+              currentWeek={contributions.currentWeek}
+              profileUrl="https://github.com/amo95"
             />
           </div>
-          <Link
-            href="https://github.com/amo95"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 inline-block text-[13px] text-muted transition-colors hover:text-foreground sm:text-[14px]"
-          >
-            View profile &rarr;
-          </Link>
         </div>
       )}
     </section>

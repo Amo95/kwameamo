@@ -1,16 +1,17 @@
-interface ContributionDay {
+export interface ContributionDay {
   date: string;
   contributionCount: number;
   contributionLevel: "NONE" | "FIRST_QUARTILE" | "SECOND_QUARTILE" | "THIRD_QUARTILE" | "FOURTH_QUARTILE";
 }
 
-interface ContributionWeek {
+export interface ContributionWeek {
   contributionDays: ContributionDay[];
 }
 
 export interface ContributionData {
   totalContributions: number;
   weeks: ContributionWeek[];
+  currentWeek: number;
 }
 
 const GITHUB_GRAPHQL_URL = "https://api.github.com/graphql";
@@ -73,30 +74,32 @@ export async function fetchContributions(username: string): Promise<Contribution
     }
 
     const weeks: ContributionWeek[] = calendar.weeks;
+    const currentWeek = weeks.length - 1;
+
+    // Pad the rest of the year with empty days so the grid always shows Jan to Dec.
     const lastDay = weeks.at(-1)?.contributionDays.at(-1);
     if (lastDay) {
-      const lastDate = new Date(lastDay.date + "T00:00:00");
-      const yearEnd = new Date(`${lastDate.getFullYear()}-12-31T00:00:00`);
-      const nextDay = new Date(lastDate);
-      nextDay.setDate(nextDay.getDate() + 1);
+      const day = new Date(`${lastDay.date}T00:00:00Z`);
+      const yearEnd = Date.UTC(day.getUTCFullYear(), 11, 31);
+      day.setUTCDate(day.getUTCDate() + 1);
 
-      while (nextDay <= yearEnd) {
-        const dayOfWeek = nextDay.getDay();
-        if (dayOfWeek === 0) {
+      while (day.getTime() <= yearEnd) {
+        if (day.getUTCDay() === 0) {
           weeks.push({ contributionDays: [] });
         }
         weeks.at(-1)!.contributionDays.push({
-          date: nextDay.toISOString().slice(0, 10),
+          date: day.toISOString().slice(0, 10),
           contributionCount: 0,
           contributionLevel: "NONE",
         });
-        nextDay.setDate(nextDay.getDate() + 1);
+        day.setUTCDate(day.getUTCDate() + 1);
       }
     }
 
     return {
       totalContributions: calendar.totalContributions,
       weeks,
+      currentWeek,
     };
   } catch (error) {
     console.error("Failed to fetch GitHub contributions:", error);

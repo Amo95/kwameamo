@@ -47,15 +47,7 @@ export default function HomeLoading() {
       <div>
         <Skeleton className="h-4 w-20" />
         <Skeleton className="mt-3 h-4 w-56" />
-        <div className="mt-3 flex gap-[3px]">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div key={i} className="flex flex-col gap-[3px]">
-              {Array.from({ length: 7 }).map((_, j) => (
-                <Skeleton key={j} className="h-3 w-3 rounded-sm" />
-              ))}
-            </div>
-          ))}
-        </div>
+        <Skeleton className="mt-3 h-[72px] w-full sm:h-[100px]" />
         <Skeleton className="mt-2 h-4 w-24" />
       </div>
     </section>
