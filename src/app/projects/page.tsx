@@ -11,7 +11,7 @@ const projects = [
   {
     title: "ShowUp",
     description:
-      "A location-based habit tracker that rewards you for showing up. Uses geofencing to automatically check you in when you arrive at a place — gym, church, library — rather than logging specific activities. Built around the idea that consistency matters more than performance.",
+      "A location-based habit tracker that rewards you for showing up. Uses geofencing to automatically check you in when you arrive at a place, like the gym, church or library, rather than logging specific activities. Built around the idea that consistency matters more than performance.",
     tech: ["Flutter", "Dart", "Supabase", "Riverpod", "Isar", "Geofencing"],
     features: [
       "Geofence-based automatic check-ins at saved locations",
@@ -39,13 +39,13 @@ const projects = [
   {
     title: "Invoica",
     description:
-      "A web-based invoicing tool for freelancers and small businesses. Create professional invoices, preview and download as PDF, customize designs, and send directly — no account required.",
+      "A web-based invoicing tool for freelancers and small businesses. Create professional invoices, preview and download as PDF, customize designs, and send directly. No account required.",
     tech: ["Next.js", "React", "TypeScript", "Vercel"],
     features: [
       "Multi-currency support (USD, GHS, EUR, GBP, NGN and more)",
       "PDF generation with live preview and direct download",
       "Customizable color schemes and invoice layouts",
-      "Guest mode — no registration required to create invoices",
+      "Guest mode: no registration required to create invoices",
     ],
     link: "https://invoica-livid.vercel.app/",
     image: "/projects/invoica.webp",
@@ -53,7 +53,7 @@ const projects = [
   {
     title: "Spiidi AI",
     description:
-      "A full-stack AI-powered educational chat platform built end-to-end for a client — logo, UI design, marketing website, backend API, database, and mobile app. Uses Spring AI with Claude as the core chat model, Wolfram Alpha as an autonomous tool for computation, and OpenAI for voice features.",
+      "A full-stack AI-powered educational chat platform built end-to-end for a client: logo, UI design, marketing website, backend API, database, and mobile app. Uses Spring AI with Claude as the core chat model, Wolfram Alpha as an autonomous tool for computation, and OpenAI for voice features.",
     tech: [
       "Spring Boot 4.0.1",
       "Spring AI",
@@ -68,7 +68,7 @@ const projects = [
       "Supabase",
     ],
     features: [
-      "End-to-end product delivery — logo, UI design, website, API, and mobile app",
+      "End-to-end product delivery: logo, UI design, website, API, and mobile app",
       "Spring AI ChatClient with Claude, Wolfram Alpha tool use, and conversation memory",
       "Multimodal chat with image and PDF attachments via Supabase storage",
       "Voice input (speech-to-text) and text-to-speech with streaming audio",

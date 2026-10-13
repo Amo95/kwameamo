@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { getVisitorRegion, type Region } from "@/lib/geo";
+import { getVisitorRegion, getBadgeText, type Region } from "@/lib/geo";
 
 // Runs before the first paint so dark mode never flashes light.
 const themeScript = `try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`;
@@ -13,19 +13,6 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
 });
-
-function getRegionText(region: Region): string {
-  switch (region) {
-    case 'EU':
-      return 'Open to EU relocation';
-    case 'US':
-      return 'Open to US relocation';
-    case 'CA':
-      return 'Open to Canada relocation';
-    case 'OTHER':
-      return 'Open for jobs';
-  }
-}
 
 function getRegionShortText(region: Region): string {
   switch (region) {
@@ -42,7 +29,7 @@ function getRegionShortText(region: Region): string {
 
 export async function generateMetadata(): Promise<Metadata> {
   const region = await getVisitorRegion();
-  const regionText = getRegionText(region);
+  const regionText = getBadgeText(region);
   const regionShortText = getRegionShortText(region);
 
   return {

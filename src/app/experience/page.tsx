@@ -11,7 +11,7 @@ const experiences = [
   {
     company: "Tunic Pay",
     role: "Backend Software Engineer",
-    period: "Dec 2025 -- Present",
+    period: "Dec 2025 - Present",
     current: true,
     description: [
       "Designed and built a fraud detection orchestrator using Kotlin, Python, and Temporal.",
@@ -22,7 +22,7 @@ const experiences = [
   {
     company: "GMoney",
     role: "Backend Developer, Freelance",
-    period: "Jan 2025 -- Jul 2025",
+    period: "Jan 2025 - Jul 2025",
     current: false,
     description: [
       "Built payment middleware supporting P2P transfers, bank-to-wallet flows, and GhIPSS interoperability.",
@@ -33,7 +33,7 @@ const experiences = [
   {
     company: "Morgan Stanley",
     role: "Contingent Software Engineer",
-    period: "Feb 2021 -- Dec 2025",
+    period: "Feb 2021 - Dec 2025",
     current: false,
     description: [
       "Automated confirms generation for structured equity products, resulting in a 90% productivity increase.",
@@ -45,8 +45,8 @@ const experiences = [
   {
     company: "Infusi Technologies ltd",
     role: "Co-Founder & Lead Backend Engineer",
-    period: "2025 -- Present",
-    current: false,
+    period: "2025 - Present",
+    current: true,
     description: [
       "Co-founded a software agency building mobile and web platforms for clients across Ghana.",
       "Lead backend engineering on the flagship Anyigba Land Security Platform for property verification.",

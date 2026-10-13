@@ -8,7 +8,7 @@
 }
 
 @theme {
-  /* Color tokens — Tailwind v4 auto-generates utilities from these */
+  /* Color tokens: Tailwind v4 auto-generates utilities from these */
   --color-background: #ffffff;
   --color-foreground: #111111;
   --color-muted: #666666;
