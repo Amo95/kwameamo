@@ -3,8 +3,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import { getVisitorRegion, type Region } from "@/lib/geo";
+
+// Runs before the first paint so dark mode never flashes light.
+const themeScript = `try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`;
 
 const inter = Inter({
   variable: "--font-inter",
@@ -90,14 +92,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className={`${inter.variable} antialiased`}>
-        <ThemeProvider>
-          <Navigation />
-          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <main className="py-8 sm:py-12 lg:py-16">{children}</main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+        <Navigation />
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <main className="py-8 sm:py-12 lg:py-16">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   );

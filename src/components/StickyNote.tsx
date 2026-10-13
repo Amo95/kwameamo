@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import type { GuestbookNote } from "@/lib/supabase";
 import { likeNote, unlikeNote } from "@/app/guestbook/actions";
 
@@ -12,8 +12,10 @@ const PASTEL_COLORS = {
   purple: "bg-purple-200 dark:bg-purple-300",
 };
 
+// Liked note ids live in localStorage; every note on the page re-reads them when they change.
+const listeners = new Set<() => void>();
+
 function getLikedNotes(): string[] {
-  if (typeof window === "undefined") return [];
   try {
     return JSON.parse(localStorage.getItem("liked-notes") || "[]");
   } catch {
@@ -21,17 +23,20 @@ function getLikedNotes(): string[] {
   }
 }
 
-function saveLikedNote(noteId: string) {
-  const liked = getLikedNotes();
-  if (!liked.includes(noteId)) {
-    liked.push(noteId);
-    localStorage.setItem("liked-notes", JSON.stringify(liked));
-  }
+function setLikedNote(noteId: string, liked: boolean) {
+  const ids = getLikedNotes().filter((id) => id !== noteId);
+  if (liked) ids.push(noteId);
+  localStorage.setItem("liked-notes", JSON.stringify(ids));
+  listeners.forEach((listener) => listener());
 }
 
-function removeLikedNote(noteId: string) {
-  const liked = getLikedNotes().filter((id) => id !== noteId);
-  localStorage.setItem("liked-notes", JSON.stringify(liked));
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  window.addEventListener("storage", listener);
+  return () => {
+    listeners.delete(listener);
+    window.removeEventListener("storage", listener);
+  };
 }
 
 interface StickyNoteProps {
@@ -40,40 +45,27 @@ interface StickyNoteProps {
 }
 
 export default function StickyNote({ note, rotation }: StickyNoteProps) {
-  const [isDragging, setIsDragging] = useState(false);
-  const [liked, setLiked] = useState(false);
+  const liked = useSyncExternalStore(
+    subscribe,
+    () => getLikedNotes().includes(note.id),
+    () => false
+  );
   const [likeCount, setLikeCount] = useState(note.likes ?? 0);
   const [animating, setAnimating] = useState(false);
-
-  useEffect(() => {
-    setLiked(getLikedNotes().includes(note.id));
-  }, [note.id]);
 
   const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setAnimating(true);
     setTimeout(() => setAnimating(false), 300);
 
-    if (liked) {
-      setLiked(false);
-      setLikeCount((c) => Math.max(c - 1, 0));
-      removeLikedNote(note.id);
-      const result = await unlikeNote(note.id);
-      if (result.error) {
-        setLiked(true);
-        setLikeCount((c) => c + 1);
-        saveLikedNote(note.id);
-      }
-    } else {
-      setLiked(true);
-      setLikeCount((c) => c + 1);
-      saveLikedNote(note.id);
-      const result = await likeNote(note.id);
-      if (result.error) {
-        setLiked(false);
-        setLikeCount((c) => Math.max(c - 1, 0));
-        removeLikedNote(note.id);
-      }
+    // Update right away, then undo if the server call fails.
+    const next = !liked;
+    setLikedNote(note.id, next);
+    setLikeCount((c) => Math.max(c + (next ? 1 : -1), 0));
+    const result = await (next ? likeNote(note.id) : unlikeNote(note.id));
+    if (result.error) {
+      setLikedNote(note.id, !next);
+      setLikeCount((c) => Math.max(c + (next ? -1 : 1), 0));
     }
   };
 
@@ -90,24 +82,8 @@ export default function StickyNote({ note, rotation }: StickyNoteProps) {
 
   return (
     <div
-      className={`group relative h-44 w-full rounded-md p-4 shadow-md transition-all duration-200 hover:shadow-xl sm:h-48 sm:p-5 ${colorClass}`}
-      style={{
-        transform: `rotate(${rotation}deg) ${isDragging ? "" : ""}`,
-        cursor: isDragging ? "grabbing" : "grab",
-      }}
-      onMouseEnter={(e) => {
-        if (!isDragging) {
-          e.currentTarget.style.transform = `rotate(${rotation}deg) translateY(-2px)`;
-        }
-      }}
-      onMouseLeave={(e) => {
-        setIsDragging(false);
-        if (!isDragging) {
-          e.currentTarget.style.transform = `rotate(${rotation}deg) translateY(0)`;
-        }
-      }}
-      onMouseDown={() => setIsDragging(true)}
-      onMouseUp={() => setIsDragging(false)}
+      className={`group relative h-44 w-full rounded-md p-4 shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl sm:h-48 sm:p-5 ${colorClass}`}
+      style={{ rotate: `${rotation}deg` }}
     >
       {/* Note content */}
       <div className="flex h-full flex-col justify-between">

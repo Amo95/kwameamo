@@ -1,37 +1,22 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import type { Metadata } from "next";
 import StickyNote from "@/components/StickyNote";
-import AddNoteModal from "@/components/AddNoteModal";
-import Skeleton from "@/components/Skeleton";
+import AddNoteButton from "@/components/AddNoteButton";
 import { getNotes } from "./actions";
-import type { GuestbookNote } from "@/lib/supabase";
 
-// Generate random rotation for each note
-const getRandomRotation = () => Math.random() * 6 - 3; // -3 to +3 degrees
+export const metadata: Metadata = {
+  title: "The Wall - James Kwame Amo",
+  description: "Leave a note, say hi.",
+};
 
-export default function GuestbookPage() {
-  const [notes, setNotes] = useState<GuestbookNote[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+// A fixed tilt per note, from -3 to +3 degrees, so notes never jump between renders.
+function rotationFor(id: string): number {
+  let hash = 0;
+  for (const char of id) hash = (hash * 31 + char.charCodeAt(0)) | 0;
+  return ((Math.abs(hash) % 61) - 30) / 10;
+}
 
-  useEffect(() => {
-    loadNotes();
-  }, []);
-
-  const loadNotes = async () => {
-    setIsLoading(true);
-    const data = await getNotes();
-    setNotes(data);
-    setIsLoading(false);
-  };
-
-  // Refresh notes when modal closes (after adding a new note)
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    loadNotes();
-  };
+export default async function GuestbookPage() {
+  const notes = await getNotes();
 
   return (
     <>
@@ -49,71 +34,24 @@ export default function GuestbookPage() {
           </p>
         </div>
 
-        {/* Loading state */}
-        {isLoading && (
+        {/* Notes grid */}
+        {notes.length === 0 ? (
+          <div className="py-8 sm:py-12 text-center">
+            <p className="text-[14px] text-muted sm:text-[15px]">
+              No notes yet. Be the first to leave one!
+            </p>
+          </div>
+        ) : (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="rounded-lg border border-border p-4 sm:p-5">
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="mt-2 h-3 w-full" />
-                <Skeleton className="mt-1.5 h-3 w-5/6" />
-                <div className="mt-4 flex items-center justify-between">
-                  <Skeleton className="h-3 w-20" />
-                  <Skeleton className="h-3 w-8" />
-                </div>
-              </div>
+            {notes.map((note) => (
+              <StickyNote key={note.id} note={note} rotation={rotationFor(note.id)} />
             ))}
           </div>
         )}
-
-        {/* Notes grid */}
-        {!isLoading && (
-          <>
-            {notes.length === 0 ? (
-              <div className="py-8 sm:py-12 text-center">
-                <p className="text-[14px] text-muted sm:text-[15px]">
-                  No notes yet. Be the first to leave one!
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-                {notes.map((note) => (
-                  <StickyNote
-                    key={note.id}
-                    note={note}
-                    rotation={getRandomRotation()}
-                  />
-                ))}
-              </div>
-            )}
-          </>
-        )}
       </section>
 
-      {/* Floating Add Note Button - Fixed to viewport */}
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="fixed bottom-20 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gray-900 text-white shadow-lg transition-all hover:scale-110 hover:shadow-xl dark:bg-gray-100 dark:text-gray-900 sm:bottom-6 sm:h-16 sm:w-16"
-        aria-label="Add note"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="12" y1="5" x2="12" y2="19" />
-          <line x1="5" y1="12" x2="19" y2="12" />
-        </svg>
-      </button>
-
-      {/* Add Note Modal - Fixed to viewport */}
-      <AddNoteModal isOpen={isModalOpen} onClose={handleModalClose} />
+      {/* Outside the animated section, so its fixed position is relative to the viewport */}
+      <AddNoteButton />
     </>
   );
 }
