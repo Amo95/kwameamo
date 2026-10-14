@@ -22,17 +22,19 @@ export default async function About() {
           building scalable, distributed systems in fintech and investment
           banking. My core stack spans{" "}
           <span className="text-foreground">
-            Java, Scala, Kotlin, and Python
+            Java, Scala, Kotlin, Go, and Python
           </span>
           , and I have deep experience with frameworks like Spring Boot,
           Temporal, and event-driven architectures.
         </p>
 
         <p>
-          Most recently, I have been at{" "}
-          <span className="text-foreground">Tunic Pay</span> building fraud
-          detection orchestration systems, and before that I spent nearly four
-          years at <span className="text-foreground">Morgan Stanley</span>{" "}
+          Most recently, I was at{" "}
+          <span className="text-foreground">Tunic Pay</span>, where I led
+          payment verification features for partner banks: async step-up,
+          isolated per-bank infrastructure, and progressive loading that shows
+          first results in about 2 seconds instead of 15. Before that I spent
+          nearly four years at <span className="text-foreground">Morgan Stanley</span>{" "}
           working on structured equity products. At Morgan Stanley, I automated
           confirms generation resulting in a 90% productivity increase, built
           trade reflow tools that reduced processing time from one hour to
@@ -64,7 +66,7 @@ export default async function About() {
           Languages
         </h2>
         <p className="mt-3 text-[15px] text-muted">
-          Java, Scala, Kotlin, Python, SQL
+          Java, Scala, Kotlin, Go, Python, SQL
         </p>
       </div>
 
@@ -83,7 +85,7 @@ export default async function About() {
           Domains
         </h2>
         <p className="mt-3 text-[15px] text-muted">
-          Fintech, Investment Banking, Payments, Fraud Detection
+          Fintech, Investment Banking, Payments, Fraud Prevention
         </p>
       </div>
 

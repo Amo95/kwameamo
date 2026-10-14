@@ -18,8 +18,8 @@ export default async function Home() {
           Backend Software Engineer
         </p>
         <p className="max-w-xl text-[14px] leading-relaxed text-muted sm:text-[15px]">
-          Building scalable systems in fintech and investment banking. Currently
-          at Tunic Pay, previously Morgan Stanley.
+          Building scalable systems in fintech and investment banking. Most
+          recently at Tunic Pay, previously Morgan Stanley.
         </p>
       </div>
 
@@ -60,13 +60,14 @@ export default async function Home() {
       {/* Brief intro sections */}
       <div className="mt-2 sm:mt-4 border-t border-border pt-6 sm:pt-8">
         <h2 className="text-[14px] font-semibold uppercase tracking-wider text-muted">
-          Currently
+          Recently
         </h2>
         <p className="mt-3 text-[15px] leading-relaxed text-muted">
-          Designing and building fraud detection systems at{" "}
-          <span className="text-foreground">Tunic Pay</span>, working with
-          Kotlin, Python, and Temporal to orchestrate distributed worker
-          services across microservices.
+          At <span className="text-foreground">Tunic Pay</span> I led async
+          step-up for partner banks, isolated per-bank deployments, and
+          progressive loading that cut the wait for first results from 15
+          seconds to about 2. I also started the move of the analysis engine
+          from Kotlin to Go.
         </p>
       </div>
 

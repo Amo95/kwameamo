@@ -11,12 +11,14 @@ const experiences = [
   {
     company: "Tunic Pay",
     role: "Backend Software Engineer",
-    period: "Dec 2025 - Present",
-    current: true,
+    period: "Dec 2025 - Oct 2026",
+    current: false,
     description: [
-      "Designed and built a fraud detection orchestrator using Kotlin, Python, and Temporal.",
-      "Implemented distributed worker services across 3 microservices for real-time transaction monitoring.",
-      "Built event-driven transaction flows for scalable fraud prevention pipelines.",
+      "Led async step-up, letting partner banks ask customers for evidence after a payment without leaving the bank's app. Built the partner API, evidence pipeline and end-to-end tests.",
+      "Planned and built isolated deployments for banks that would not share infrastructure, each with its own cloud project, database, storage and messaging.",
+      "Wrote the RFC for progressive loading and led the team that built it: first results in about 2 seconds instead of up to 15, and one failing source no longer blocks the rest.",
+      "Integrated OpenCorporates for company checks outside the UK, including officer search.",
+      "Started the migration of the analysis engine from Kotlin to Go and tracked parity across check types.",
     ],
   },
   {
