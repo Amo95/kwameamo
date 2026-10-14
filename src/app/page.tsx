@@ -18,8 +18,8 @@ export default async function Home() {
           Backend Software Engineer
         </p>
         <p className="max-w-xl text-[14px] leading-relaxed text-muted sm:text-[15px]">
-          Building scalable systems in fintech and investment banking. Currently
-          at Tunic Pay, previously Morgan Stanley.
+          Building scalable systems in fintech and investment banking. Most
+          recently at Tunic Pay, previously Morgan Stanley.
         </p>
       </div>
 
@@ -60,13 +60,14 @@ export default async function Home() {
       {/* Brief intro sections */}
       <div className="mt-2 sm:mt-4 border-t border-border pt-6 sm:pt-8">
         <h2 className="text-[14px] font-semibold uppercase tracking-wider text-muted">
-          Currently
+          Recently
         </h2>
         <p className="mt-3 text-[15px] leading-relaxed text-muted">
-          Designing and building fraud detection systems at{" "}
-          <span className="text-foreground">Tunic Pay</span>, working with
-          Kotlin, Python, and Temporal to orchestrate distributed worker
-          services across microservices.
+          At <span className="text-foreground">Tunic Pay</span> I built async
+          step-up for partner banks, rolled out isolated deployments for 8 of
+          them, and led the team that made fraud check results stream in,
+          cutting about 90% of the wait for first results. Mostly Go, with
+          Temporal on GCP.
         </p>
       </div>
 
@@ -105,16 +106,10 @@ export default async function Home() {
             <ContributionGraph
               totalContributions={contributions.totalContributions}
               weeks={contributions.weeks}
+              currentWeek={contributions.currentWeek}
+              profileUrl="https://github.com/amo95"
             />
           </div>
-          <Link
-            href="https://github.com/amo95"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 inline-block text-[13px] text-muted transition-colors hover:text-foreground sm:text-[14px]"
-          >
-            View profile &rarr;
-          </Link>
         </div>
       )}
     </section>

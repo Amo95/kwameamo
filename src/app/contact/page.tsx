@@ -18,7 +18,7 @@ export default async function Contact() {
         </h1>
         <p className="mt-2 text-[14px] leading-relaxed text-muted sm:text-[15px]">
           I am always open to conversations about backend engineering, fintech,
-          or new opportunities{contactText ? ` -- ${contactText}` : ""}. Feel free to reach out.
+          or new opportunities{contactText ? `, ${contactText}` : ""}. Feel free to reach out.
         </p>
       </div>
 

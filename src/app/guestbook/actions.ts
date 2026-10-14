@@ -3,11 +3,16 @@
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { revalidatePath } from "next/cache";
 
+const COLOURS = ["yellow", "pink", "blue", "green", "purple"];
+const AVATAR_SEED = /^[a-z0-9]{1,16}$/;
+const NOTE_ID = /^[0-9a-f-]{36}$/i;
+
 export async function getNotes() {
   const { data, error } = await supabaseAdmin
     .from("guestbook")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(100);
 
   if (error) {
     console.error("Error fetching notes:", error);
@@ -18,13 +23,18 @@ export async function getNotes() {
 }
 
 export async function addNote(formData: FormData) {
-  const name = formData.get("name") as string;
-  const message = formData.get("message") as string;
-  const colour = formData.get("colour") as string;
-  const avatar = (formData.get("avatar") as string) || null;
+  // Server actions are public endpoints, so check everything here, not just in the form.
+  const name = String(formData.get("name") ?? "").trim();
+  const message = String(formData.get("message") ?? "").trim();
+  const colour = String(formData.get("colour") ?? "");
+  const avatar = String(formData.get("avatar") ?? "");
 
   if (!name || !message) {
     return { error: "Name and message are required" };
+  }
+
+  if (name.length > 30) {
+    return { error: "Name must be 30 characters or less" };
   }
 
   if (message.length > 100) {
@@ -35,8 +45,8 @@ export async function addNote(formData: FormData) {
     {
       name,
       message,
-      colour,
-      avatar,
+      colour: COLOURS.includes(colour) ? colour : "yellow",
+      avatar: AVATAR_SEED.test(avatar) ? avatar : null,
     },
   ]);
 
@@ -50,6 +60,10 @@ export async function addNote(formData: FormData) {
 }
 
 export async function likeNote(noteId: string) {
+  if (typeof noteId !== "string" || !NOTE_ID.test(noteId)) {
+    return { error: "Failed to like note" };
+  }
+
   const { data: note, error: fetchError } = await supabaseAdmin
     .from("guestbook")
     .select("likes")
@@ -77,6 +91,10 @@ export async function likeNote(noteId: string) {
 }
 
 export async function unlikeNote(noteId: string) {
+  if (typeof noteId !== "string" || !NOTE_ID.test(noteId)) {
+    return { error: "Failed to unlike note" };
+  }
+
   const { data: note, error: fetchError } = await supabaseAdmin
     .from("guestbook")
     .select("likes")

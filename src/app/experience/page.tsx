@@ -11,18 +11,20 @@ const experiences = [
   {
     company: "Tunic Pay",
     role: "Backend Software Engineer",
-    period: "Dec 2025 -- Present",
-    current: true,
+    period: "Dec 2025 - Oct 2026",
+    current: false,
     description: [
-      "Designed and built a fraud detection orchestrator using Kotlin, Python, and Temporal.",
-      "Implemented distributed worker services across 3 microservices for real-time transaction monitoring.",
-      "Built event-driven transaction flows for scalable fraud prevention pipelines.",
+      "Built async step-up end to end, from the external partner API and signed outcome webhook to the internal step-up logic, so banks can ask customers for evidence after a payment without leaving the bank's app.",
+      "Planned and rolled out isolated deployments of the evidence service for 8 partner banks, each in its own cloud project with its own database, storage, messaging and TLS ingress, with rollback behind a feature flag.",
+      "Wrote the RFC for progressive loading and led the 4-engineer team that built it. Results now stream in per data source, cutting about 90% of the wait for first results in measured runs.",
+      "Integrated OpenCorporates for non-UK company and officer checks, from a new Go data source to the UI, and made risk indicators name their real source.",
+      "Worked on moving the analysis engine from Kotlin to Go: tracked parity across 13 check types, moved the fraud database lookup into Go, and added the last missing check.",
     ],
   },
   {
     company: "GMoney",
     role: "Backend Developer, Freelance",
-    period: "Jan 2025 -- Jul 2025",
+    period: "Jan 2025 - Jul 2025",
     current: false,
     description: [
       "Built payment middleware supporting P2P transfers, bank-to-wallet flows, and GhIPSS interoperability.",
@@ -33,7 +35,7 @@ const experiences = [
   {
     company: "Morgan Stanley",
     role: "Contingent Software Engineer",
-    period: "Feb 2021 -- Dec 2025",
+    period: "Feb 2021 - Dec 2025",
     current: false,
     description: [
       "Automated confirms generation for structured equity products, resulting in a 90% productivity increase.",
@@ -45,8 +47,8 @@ const experiences = [
   {
     company: "Infusi Technologies ltd",
     role: "Co-Founder & Lead Backend Engineer",
-    period: "2025 -- Present",
-    current: false,
+    period: "2025 - Present",
+    current: true,
     description: [
       "Co-founded a software agency building mobile and web platforms for clients across Ghana.",
       "Lead backend engineering on the flagship Anyigba Land Security Platform for property verification.",

@@ -23,6 +23,8 @@ In the Supabase dashboard:
 | message | text | - | - |
 | colour | text | - | - |
 | created_at | timestamptz | `now()` | - |
+| likes | int4 | `0` | - |
+| avatar | text | - | Nullable |
 
 5. Click **Save**
 
@@ -36,23 +38,15 @@ create table public.guestbook (
   name text not null,
   message text not null,
   colour text not null,
-  created_at timestamptz default now() not null
+  created_at timestamptz default now() not null,
+  likes integer default 0 not null,
+  avatar text
 );
 
--- Enable Row Level Security (RLS)
+-- Enable Row Level Security (RLS) with no policies. The site reads and writes
+-- only on the server with the service role key, which bypasses RLS, so the
+-- public anon key cannot read or write this table directly.
 alter table public.guestbook enable row level security;
-
--- Allow anyone to read notes
-create policy "Enable read access for all users"
-on public.guestbook for select
-to anon, authenticated
-using (true);
-
--- Allow anyone to insert notes
-create policy "Enable insert access for all users"
-on public.guestbook for insert
-to anon, authenticated
-with check (true);
 ```
 
 ## 4. Get Your API Keys
@@ -61,6 +55,7 @@ with check (true);
 2. Copy the following:
    - **Project URL** (e.g., `https://xxx.supabase.co`)
    - **anon public** key (under "Project API keys")
+   - **service_role** key (secret: keep it on the server, never in client code)
 
 ## 5. Set Environment Variables
 
@@ -69,9 +64,10 @@ Create a `.env.local` file in the portfolio root directory:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=your_project_url_here
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
 ```
 
-Replace `your_project_url_here` and `your_anon_key_here` with the values from step 4.
+Replace the placeholders with the values from step 4. Add the same three variables in Vercel.
 
 ## 6. Restart the Dev Server
 

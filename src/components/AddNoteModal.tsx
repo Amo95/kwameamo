@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useMemo } from "react";
+import { useState, useTransition } from "react";
 import { addNote } from "@/app/guestbook/actions";
 
 const PASTEL_COLORS = [
@@ -13,6 +13,10 @@ const PASTEL_COLORS = [
 
 const AVATAR_COUNT = 8;
 
+function randomColour() {
+  return PASTEL_COLORS[Math.floor(Math.random() * PASTEL_COLORS.length)].name;
+}
+
 function generateAvatarSeeds() {
   return Array.from({ length: AVATAR_COUNT }, () =>
     Math.random().toString(36).substring(2, 10)
@@ -20,21 +24,16 @@ function generateAvatarSeeds() {
 }
 
 interface AddNoteModalProps {
-  isOpen: boolean;
   onClose: () => void;
 }
 
-export default function AddNoteModal({ isOpen, onClose }: AddNoteModalProps) {
-  const [selectedColor, setSelectedColor] = useState(
-    PASTEL_COLORS[Math.floor(Math.random() * PASTEL_COLORS.length)].name
-  );
+export default function AddNoteModal({ onClose }: AddNoteModalProps) {
+  const [selectedColor, setSelectedColor] = useState(randomColour);
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
 
-  const avatarSeeds = useMemo(() => generateAvatarSeeds(), [isOpen]);
+  const [avatarSeeds] = useState(generateAvatarSeeds);
   const [selectedAvatar, setSelectedAvatar] = useState(avatarSeeds[0]);
-
-  if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,7 +50,6 @@ export default function AddNoteModal({ isOpen, onClose }: AddNoteModalProps) {
         setError(result.error);
       } else {
         onClose();
-        (e.target as HTMLFormElement).reset();
       }
     });
   };
