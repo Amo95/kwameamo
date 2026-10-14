@@ -30,10 +30,10 @@ export default async function About() {
 
         <p>
           Most recently, I was at{" "}
-          <span className="text-foreground">Tunic Pay</span>, where I led
-          payment verification features for partner banks: async step-up,
-          isolated per-bank infrastructure, and progressive loading that shows
-          first results in about 2 seconds instead of 15. Before that I spent
+          <span className="text-foreground">Tunic Pay</span>, where I built
+          async step-up for partner banks, rolled out isolated per-bank
+          infrastructure, and led the team that made fraud check results
+          stream in as each data source returns. Before that I spent
           nearly four years at <span className="text-foreground">Morgan Stanley</span>{" "}
           working on structured equity products. At Morgan Stanley, I automated
           confirms generation resulting in a 90% productivity increase, built

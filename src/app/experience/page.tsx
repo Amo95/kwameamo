@@ -14,11 +14,11 @@ const experiences = [
     period: "Dec 2025 - Oct 2026",
     current: false,
     description: [
-      "Led async step-up, letting partner banks ask customers for evidence after a payment without leaving the bank's app. Built the partner API, evidence pipeline and end-to-end tests.",
-      "Planned and built isolated deployments for banks that would not share infrastructure, each with its own cloud project, database, storage and messaging.",
-      "Wrote the RFC for progressive loading and led the team that built it: first results in about 2 seconds instead of up to 15, and one failing source no longer blocks the rest.",
-      "Integrated OpenCorporates for company checks outside the UK, including officer search.",
-      "Started the migration of the analysis engine from Kotlin to Go and tracked parity across check types.",
+      "Built async step-up end to end, from the external partner API and signed outcome webhook to the internal step-up logic, so banks can ask customers for evidence after a payment without leaving the bank's app.",
+      "Planned and rolled out isolated deployments of the evidence service for 8 partner banks, each in its own cloud project with its own database, storage, messaging and TLS ingress, with rollback behind a feature flag.",
+      "Wrote the RFC for progressive loading and led the 4-engineer team that built it. Results now stream in per data source, cutting about 90% of the wait for first results in measured runs.",
+      "Integrated OpenCorporates for non-UK company and officer checks, from a new Go data source to the UI, and made risk indicators name their real source.",
+      "Worked on moving the analysis engine from Kotlin to Go: tracked parity across 13 check types, moved the fraud database lookup into Go, and added the last missing check.",
     ],
   },
   {

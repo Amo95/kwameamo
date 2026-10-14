@@ -63,11 +63,11 @@ export default async function Home() {
           Recently
         </h2>
         <p className="mt-3 text-[15px] leading-relaxed text-muted">
-          At <span className="text-foreground">Tunic Pay</span> I led async
-          step-up for partner banks, isolated per-bank deployments, and
-          progressive loading that cut the wait for first results from 15
-          seconds to about 2. I also started the move of the analysis engine
-          from Kotlin to Go.
+          At <span className="text-foreground">Tunic Pay</span> I built async
+          step-up for partner banks, rolled out isolated deployments for 8 of
+          them, and led the team that made fraud check results stream in,
+          cutting about 90% of the wait for first results. Mostly Go, with
+          Temporal on GCP.
         </p>
       </div>
 
