@@ -83,3 +83,17 @@ npm run dev
 4. Submit!
 
 Your guestbook is now live! 🎉
+
+## GitHub activity table
+
+Run this in the SQL Editor to store the latest push per repo for the live activity line:
+
+```sql
+create table if not exists public.github_activity (
+  repo text primary key,
+  pushed_at timestamptz not null
+);
+alter table public.github_activity enable row level security;
+```
+
+There are no policies: only the server's service role key reads or writes this table.
