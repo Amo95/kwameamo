@@ -56,9 +56,20 @@ export default function StreakIntro({ days, isBest }: { days: number; isBest: bo
     dialog.focus({ preventScroll: true });
     let leaving = false;
 
+    const onKey = (e: KeyboardEvent) => {
+      if (leaving) return;
+      if (KEYS.includes(e.key)) {
+        e.preventDefault();
+        leave();
+      } else if (e.key === "Tab") {
+        e.preventDefault();
+      }
+    };
+
     const leave = () => {
       if (leaving) return;
       leaving = true;
+      document.removeEventListener("keydown", onKey);
       root.style.overflow = overflow;
       setPhase("closing");
 
@@ -91,14 +102,6 @@ export default function StreakIntro({ days, isBest }: { days: number; isBest: bo
       }, EXIT_MS);
     };
 
-    const onKey = (e: KeyboardEvent) => {
-      if (KEYS.includes(e.key)) {
-        e.preventDefault();
-        leave();
-      } else if (e.key === "Tab" && !leaving) {
-        e.preventDefault();
-      }
-    };
     dialog.addEventListener("click", leave);
     document.addEventListener("keydown", onKey);
     return () => {
@@ -111,55 +114,60 @@ export default function StreakIntro({ days, isBest }: { days: number; isBest: bo
   if (phase === "done") return null;
 
   return (
-    <div
-      ref={dialogRef}
-      role="dialog"
-      aria-modal="true"
-      aria-label={`${days}-day coding streak`}
-      tabIndex={-1}
-      className={`streak-intro fixed inset-0 z-[60] grid cursor-pointer place-items-center px-4 outline-none backdrop-blur-[6px] transition-opacity duration-500 ease-in-out${
-        phase === "closing" ? " pointer-events-none opacity-0" : ""
-      }`}
-    >
-      <div className="flex flex-col items-center gap-[22px] text-center">
-        <div
-          ref={stageRef}
-          aria-hidden="true"
-          className="relative h-[140px] w-[140px] perspective-[900px] sm:h-[180px] sm:w-[180px]"
-        >
-          <div className="pointer-events-none absolute -inset-[40%] rounded-full bg-[radial-gradient(circle,rgba(250,204,21,.35),rgba(250,204,21,0)_60%)] animate-[streak-fade_.8s_ease_2.4s_both]" />
+    <>
+      <noscript>
+        <style>{".streak-intro{display:none}"}</style>
+      </noscript>
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${days}-day coding streak`}
+        tabIndex={-1}
+        className={`streak-intro fixed inset-0 z-[60] grid cursor-pointer place-items-center px-4 outline-none backdrop-blur-[6px] transition-opacity duration-500 ease-in-out${
+          phase === "closing" ? " pointer-events-none opacity-0" : ""
+        }`}
+      >
+        <div className="flex flex-col items-center gap-[22px] text-center">
           <div
-            ref={spinnerRef}
-            className="relative h-full w-full transform-3d animate-[streak-spin_1.8s_cubic-bezier(.2,.75,.25,1)_both] motion-reduce:animate-none motion-reduce:[transform:rotateX(10deg)]"
+            ref={stageRef}
+            aria-hidden="true"
+            className="relative h-[140px] w-[140px] perspective-[900px] sm:h-[180px] sm:w-[180px]"
           >
-            {DEPTHS.map((z) => (
-              <div key={z} className="absolute inset-0" style={{ ...SIDE, transform: `translateZ(${z}px)` }}>
+            <div className="pointer-events-none absolute -inset-[40%] rounded-full bg-[radial-gradient(circle,rgba(250,204,21,.35),rgba(250,204,21,0)_60%)] animate-[streak-fade_.8s_ease_2.4s_both]" />
+            <div
+              ref={spinnerRef}
+              className="relative h-full w-full transform-3d animate-[streak-spin_1.8s_cubic-bezier(.2,.75,.25,1)_both] motion-reduce:animate-none motion-reduce:[transform:rotateX(10deg)]"
+            >
+              {DEPTHS.map((z) => (
+                <div key={z} className="absolute inset-0" style={{ ...SIDE, transform: `translateZ(${z}px)` }}>
+                  <StreakStar className="block h-full w-full" shadow={false} />
+                </div>
+              ))}
+              <div ref={faceRef} className="absolute inset-0 [transform:translateZ(0)]">
                 <StreakStar className="block h-full w-full" />
               </div>
-            ))}
-            <div ref={faceRef} className="absolute inset-0 [transform:translateZ(0)]">
-              <StreakStar className="block h-full w-full" />
             </div>
+            {SPARKS.map((style, i) => (
+              <span
+                key={i}
+                className="absolute left-1/2 top-1/2 -m-[3px] h-[6px] w-[6px] rounded-full bg-[var(--star-2)] opacity-0 animate-[streak-spark_.9s_ease-out_both] motion-reduce:hidden"
+                style={style}
+              />
+            ))}
           </div>
-          {SPARKS.map((style, i) => (
-            <span
-              key={i}
-              className="absolute left-1/2 top-1/2 -m-[3px] h-[6px] w-[6px] rounded-full bg-[var(--star-2)] opacity-0 animate-[streak-spark_.9s_ease-out_both] motion-reduce:hidden"
-              style={style}
-            />
-          ))}
+          <p className="text-[44px] font-[650] leading-tight tracking-[-0.03em] text-foreground animate-[streak-rise_.5s_ease_.7s_both]">
+            {`${days}-day streak`}
+          </p>
+          <p className="-mt-3 text-[15px] text-muted animate-[streak-fade_.5s_ease_.9s_both]">
+            {isBest ? "Coding every day. My longest run this year." : "Coding every day."}
+          </p>
+          <p className="text-[13px] text-muted animate-[streak-fade_.6s_ease_1.8s_both]">
+            <span className="[@media(hover:none)]:hidden">Click anywhere to enter</span>
+            <span className="hidden [@media(hover:none)]:inline">Tap anywhere to enter</span>
+          </p>
         </div>
-        <p className="text-[44px] font-[650] leading-tight tracking-[-0.03em] text-foreground animate-[streak-rise_.5s_ease_.7s_both]">
-          {`${days}-day streak`}
-        </p>
-        <p className="-mt-3 text-[15px] text-muted animate-[streak-fade_.5s_ease_.9s_both]">
-          {isBest ? "Coding every day. My longest run this year." : "Coding every day."}
-        </p>
-        <p className="text-[13px] text-muted/70 animate-[streak-fade_.6s_ease_1.8s_both]">
-          <span className="[@media(hover:none)]:hidden">Click anywhere to enter</span>
-          <span className="hidden [@media(hover:none)]:inline">Tap anywhere to enter</span>
-        </p>
       </div>
-    </div>
+    </>
   );
 }
