@@ -57,7 +57,7 @@ export async function fetchContributions(username: string): Promise<Contribution
           to: new Date().toISOString(),
         },
       }),
-      next: { revalidate: 86400 },
+      next: { revalidate: 3600 },
     });
 
     if (!response.ok) {

@@ -22,6 +22,12 @@
   --color-contrib-second_quartile: #40c463;
   --color-contrib-third_quartile: #30a14e;
   --color-contrib-fourth_quartile: #216e39;
+  --star-1: #fde047;
+  --star-2: #facc15;
+  --star-3: #eab308;
+  --star-4: #ca8a04;
+  --star-5: #a16207;
+  --star-edge: #854d0e;
 }
 
 @layer base {
@@ -49,6 +55,12 @@
   --color-contrib-second_quartile: #006d32;
   --color-contrib-third_quartile: #26a641;
   --color-contrib-fourth_quartile: #39d353;
+  --star-1: #fff3b0;
+  --star-2: #fde047;
+  --star-3: #facc15;
+  --star-4: #eab308;
+  --star-5: #ca8a04;
+  --star-edge: #a16207;
 }
 
 /* Animations */

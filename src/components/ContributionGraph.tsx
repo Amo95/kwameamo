@@ -4,12 +4,16 @@ import Link from "next/link";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import type { ContributionDay, ContributionWeek } from "@/lib/github";
+import type { StreakStats } from "@/lib/streak";
+import StreakStar from "@/components/StreakStar";
 
 interface ContributionGraphProps {
   totalContributions: number;
   weeks: ContributionWeek[];
   currentWeek: number;
   profileUrl: string;
+  stats: StreakStats;
+  live: { name: string; ago: string } | null;
 }
 
 type Tooltip = { text: string; x: number; y: number };
@@ -27,6 +31,10 @@ function formatDate(dateString: string): string {
     year: "numeric",
     timeZone: "UTC",
   });
+}
+
+function plural(n: number, unit: string): string {
+  return `${n} ${unit}${n === 1 ? "" : "s"}`;
 }
 
 function weekday(dateString: string): number {
@@ -51,13 +59,27 @@ function monthLabels(weeks: ContributionWeek[]) {
   return labels;
 }
 
+function Stat({ value, caption, star = false }: { value: string; caption: string; star?: boolean }) {
+  return (
+    <div>
+      <p className="flex items-center gap-2 text-[24px] font-semibold leading-none tracking-tight text-foreground">
+        {star && <StreakStar className="h-[26px] w-[26px] shrink-0" />}
+        {value}
+      </p>
+      <p className="mt-[5px] text-[12px] text-muted">{caption}</p>
+    </div>
+  );
+}
+
 function Calendar({
   weeks,
   label,
+  runStart,
   onHover,
 }: {
   weeks: ContributionWeek[];
   label: string;
+  runStart: string | null;
   onHover: (day: ContributionDay | null, cell?: HTMLElement) => void;
 }) {
   return (
@@ -89,7 +111,7 @@ function Calendar({
         week.contributionDays.map((day) => (
           <div
             key={day.date}
-            className="aspect-square rounded-[2px]"
+            className={`aspect-square rounded-[2px]${runStart !== null && day.date < runStart ? " opacity-45" : ""}`}
             style={{
               gridColumn: i + 2,
               gridRow: weekday(day.date) + 2,
@@ -109,6 +131,8 @@ export default function ContributionGraph({
   weeks,
   currentWeek,
   profileUrl,
+  stats,
+  live,
 }: ContributionGraphProps) {
   const [tooltip, setTooltip] = useState<Tooltip | null>(null);
 
@@ -130,24 +154,31 @@ export default function ContributionGraph({
 
   return (
     <div>
-      <p className="text-[13px] text-muted sm:text-[14px]">{summary}</p>
-
-      <div className="mt-3 hidden sm:block">
-        <Calendar weeks={weeks} label={summary} onHover={handleHover} />
+      <div className="flex flex-wrap items-end gap-x-7 gap-y-3">
+        {stats.current >= 2 ? (
+          <Stat
+            star
+            value={plural(stats.current, "day")}
+            caption={`coding streak · ${stats.current === stats.best ? "your best" : `best ${stats.best}`}`}
+          />
+        ) : stats.best >= 2 ? (
+          <Stat value={plural(stats.best, "day")} caption="best streak this year" />
+        ) : null}
+        {stats.weeks >= 1 ? (
+          <Stat value={plural(stats.weeks, "week")} caption="in a row" />
+        ) : (
+          <Stat value={plural(stats.activeDays, "day")} caption="active this year" />
+        )}
       </div>
-      <div className="mt-3 sm:hidden">
-        <Calendar weeks={phoneWeeks} label={summary} onHover={handleHover} />
+
+      <div className="mt-4 hidden sm:block">
+        <Calendar weeks={weeks} label={summary} runStart={stats.runStart} onHover={handleHover} />
+      </div>
+      <div className="mt-4 sm:hidden">
+        <Calendar weeks={phoneWeeks} label={summary} runStart={stats.runStart} onHover={handleHover} />
       </div>
 
-      <div className="mt-2 flex items-center justify-between gap-4">
-        <Link
-          href={profileUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[13px] text-muted transition-colors hover:text-foreground sm:text-[14px]"
-        >
-          View profile &rarr;
-        </Link>
+      <div className="mt-2 flex justify-end">
         <div className="flex items-center gap-[3px] text-[11px] text-muted" aria-hidden="true">
           <span className="mr-1">Less</span>
           {LEVELS.map((level) => (
@@ -159,6 +190,25 @@ export default function ContributionGraph({
           ))}
           <span className="ml-1">More</span>
         </div>
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-[13px] sm:text-[14px]">
+        {live && (
+          <p className="flex items-center gap-2">
+            <span className="h-[7px] w-[7px] shrink-0 rounded-full bg-green-500 ring-[3px] ring-green-500/20" aria-hidden="true" />
+            <span className="text-muted">Building</span>
+            <span className="rounded-md border border-border px-[7px] leading-snug text-foreground">{live.name}</span>
+            <span className="text-muted">{live.ago}</span>
+          </p>
+        )}
+        <Link
+          href={profileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-auto text-muted transition-colors hover:text-foreground"
+        >
+          View profile &rarr;
+        </Link>
       </div>
 
       {tooltip && createPortal(

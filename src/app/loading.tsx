@@ -45,10 +45,28 @@ export default function HomeLoading() {
 
       {/* GitHub */}
       <div>
-        <Skeleton className="h-4 w-20" />
-        <Skeleton className="mt-3 h-4 w-56" />
-        <Skeleton className="mt-3 h-[72px] w-full sm:h-[100px]" />
-        <Skeleton className="mt-2 h-4 w-24" />
+        <div className="flex items-center justify-between gap-4">
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-4 w-40" />
+        </div>
+        <div className="mt-3 flex gap-7">
+          <div>
+            <Skeleton className="h-6 w-28" />
+            <Skeleton className="mt-[5px] h-3.5 w-36" />
+          </div>
+          <div>
+            <Skeleton className="h-6 w-20" />
+            <Skeleton className="mt-[5px] h-3.5 w-14" />
+          </div>
+        </div>
+        <Skeleton className="mt-4 h-[72px] w-full sm:h-[100px]" />
+        <div className="mt-2 flex justify-end">
+          <Skeleton className="h-3 w-28" />
+        </div>
+        <div className="mt-3 flex items-center justify-between gap-4">
+          <Skeleton className="h-4 w-44" />
+          <Skeleton className="h-4 w-24" />
+        </div>
       </div>
     </section>
   );
