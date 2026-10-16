@@ -12,13 +12,11 @@ const POINTS = Array.from({ length: 10 }, (_, i) => {
 // is a step darker again for the bevel. Values index --star-1 (lightest) to --star-5.
 const SHADES = [0, 1, 2, 3, 3, 2, 1, 0, 0, 0].map((turn, face) => turn + (face % 2) + 1);
 
-export default function StreakStar({ className = "" }: { className?: string }) {
+const SHADOW = "drop-shadow-[0_2px_2px_rgba(120,80,0,0.25)] dark:drop-shadow-[0_2px_2px_rgba(0,0,0,0.35)]";
+
+export default function StreakStar({ className = "", shadow = true }: { className?: string; shadow?: boolean }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className={`drop-shadow-[0_2px_2px_rgba(120,80,0,0.25)] dark:drop-shadow-[0_2px_2px_rgba(0,0,0,0.35)] ${className}`}
-    >
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={shadow ? `${SHADOW} ${className}` : className}>
       {POINTS.map((point, face) => (
         <polygon
           key={face}

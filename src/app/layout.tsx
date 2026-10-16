@@ -7,6 +7,8 @@ import { getVisitorRegion, getBadgeText, type Region } from "@/lib/geo";
 
 // Runs before the first paint so dark mode never flashes light.
 const themeScript = `try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`;
+// Hides the streak intro before the first paint once it has played in this tab.
+const introScript = `try{if(sessionStorage.getItem("streak-intro-seen"))document.documentElement.classList.add("intro-seen")}catch(e){}`;
 
 const inter = Inter({
   variable: "--font-inter",
@@ -81,6 +83,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
       </head>
       <body className={`${inter.variable} antialiased`}>
         <Navigation />

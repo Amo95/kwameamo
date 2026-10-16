@@ -42,3 +42,7 @@ export function streakStats(weeks: ContributionWeek[], today: string): StreakSta
     runStart: current >= 2 ? days[end - current + 1].date : null,
   };
 }
+
+export function showsStreakIntro(stats: StreakStats): boolean {
+  return stats.current >= 2;
+}

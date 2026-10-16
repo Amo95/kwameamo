@@ -63,7 +63,11 @@ function Stat({ value, caption, star = false }: { value: string; caption: string
   return (
     <div>
       <p className="flex items-center gap-2 text-[24px] font-semibold leading-none tracking-tight text-foreground">
-        {star && <StreakStar className="h-[26px] w-[26px] shrink-0" />}
+        {star && (
+          <span data-streak-star className="h-[26px] w-[26px] shrink-0">
+            <StreakStar className="block h-full w-full" />
+          </span>
+        )}
         {value}
       </p>
       <p className="mt-[5px] text-[12px] text-muted">{caption}</p>
