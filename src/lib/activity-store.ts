@@ -19,7 +19,8 @@ export async function getLatestActivity(): Promise<{ repo: string; pushedAt: Dat
     .select("repo, pushed_at")
     .in("repo", Object.keys(PROJECTS))
     .order("pushed_at", { ascending: false })
-    .limit(1);
+    .limit(1)
+    .abortSignal(AbortSignal.timeout(1500));
   if (error) {
     console.error("Reading activity failed:", error);
     return null;

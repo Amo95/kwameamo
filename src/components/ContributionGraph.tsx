@@ -166,9 +166,9 @@ export default function ContributionGraph({
         ) : null}
         {stats.weeks >= 1 ? (
           <Stat value={plural(stats.weeks, "week")} caption="in a row" />
-        ) : (
+        ) : stats.activeDays > 0 ? (
           <Stat value={plural(stats.activeDays, "day")} caption="active this year" />
-        )}
+        ) : null}
       </div>
 
       <div className="mt-4 hidden sm:block">

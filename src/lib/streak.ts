@@ -23,7 +23,7 @@ export function streakStats(weeks: ContributionWeek[], today: string): StreakSta
 
   // Count back from today, or from yesterday when today has no contributions yet.
   let end = days.length - 1;
-  if (end >= 0 && days[end].contributionCount === 0) end--;
+  if (end >= 0 && days[end].date === today && days[end].contributionCount === 0) end--;
   let current = 0;
   while (end - current >= 0 && days[end - current].contributionCount > 0) current++;
 

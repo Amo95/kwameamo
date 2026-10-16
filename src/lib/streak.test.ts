@@ -109,3 +109,19 @@ test("activeDays", () => {
   const stats = streakStats(calendar("2026-10-01", [...counts, 5, 5], "2026-10-31"), TODAY);
   assert.equal(stats.activeDays, 4);
 });
+
+test("quiet Jan 1: everything zero", () => {
+  const stats = streakStats(calendar("2027-01-01", [0]), "2027-01-01");
+  assert.equal(stats.current, 0);
+  assert.equal(stats.best, 0);
+  assert.equal(stats.weeks, 0);
+  assert.equal(stats.activeDays, 0);
+  assert.equal(stats.runStart, null);
+});
+
+test("stale data: last data day is not today, so no skip", () => {
+  // Data ends 10-14 with 0; earlier days active; today is 10-15
+  const counts = [...ones(5), 0];
+  const stats = streakStats(calendar("2026-10-09", counts), "2026-10-15");
+  assert.equal(stats.current, 0);
+});
