@@ -6,6 +6,7 @@ import StreakStar from "@/components/StreakStar";
 const SEEN_KEY = "streak-intro-seen";
 const EXIT_MS = 800;
 const FLY_MS = 750;
+const DIVE_GAP = 24;
 const KEYS = ["Enter", " ", "Escape"];
 
 // Darker faces stacked behind the top face give the star thickness while it turns.
@@ -78,8 +79,11 @@ export default function StreakIntro({ days, isBest }: { days: number; isBest: bo
       const svg = faceRef.current?.firstElementChild;
       const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
       let flyer: HTMLDivElement | null = null;
-      if (home && to && svg && stageRef.current && !reduce && fullyVisible(to)) {
+      if (home && to && svg && stageRef.current && !reduce) {
         const from = stageRef.current.getBoundingClientRect();
+        // Below the fold: dive toward the stats, dropping out under the bottom edge.
+        const inView = fullyVisible(to);
+        const end = inView ? to : new DOMRect(to.left, innerHeight + DIVE_GAP, to.width, to.height);
         flyer = document.createElement("div");
         flyer.style.cssText = "position:fixed;z-index:70;pointer-events:none";
         flyer.append(svg.cloneNode(true));
@@ -90,9 +94,9 @@ export default function StreakIntro({ days, isBest }: { days: number; isBest: bo
         flyer.animate(
           [
             { ...box(from), transform: "rotate(0deg)" },
-            { ...box(to), transform: "rotate(360deg)" },
+            { ...box(end), transform: "rotate(360deg)" },
           ],
-          { duration: FLY_MS, easing: "cubic-bezier(.65,0,.25,1)", fill: "forwards" }
+          { duration: FLY_MS, easing: inView ? "cubic-bezier(.65,0,.25,1)" : "cubic-bezier(.55,0,.8,.2)", fill: "forwards" }
         );
       }
       setTimeout(() => {
