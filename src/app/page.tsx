@@ -1,12 +1,30 @@
 import Link from "next/link";
 import { getVisitorRegion, getBadgeText } from "@/lib/geo";
 import { fetchContributions } from "@/lib/github";
+import { streakStats } from "@/lib/streak";
+import { displayName, isRecent, timeAgo } from "@/lib/activity";
+import { getLatestActivity } from "@/lib/activity-store";
 import ContributionGraph from "@/components/ContributionGraph";
+
+async function loadGitHub() {
+  const [contributions, activity] = await Promise.all([fetchContributions("amo95"), getLatestActivity()]);
+  if (!contributions) return null;
+  const now = new Date();
+  const name = activity && displayName(activity.repo);
+  const live =
+    activity && name && isRecent(activity.pushedAt, now) ? { name, ago: timeAgo(activity.pushedAt, now) } : null;
+  return {
+    ...contributions,
+    year: contributions.weeks[0]?.contributionDays[0]?.date.slice(0, 4),
+    stats: streakStats(contributions.weeks, now.toISOString().slice(0, 10)),
+    live,
+  };
+}
 
 export default async function Home() {
   const region = await getVisitorRegion();
   const badgeText = getBadgeText(region);
-  const contributions = await fetchContributions("amo95");
+  const github = await loadGitHub();
   return (
     <section className="flex flex-col gap-6 sm:gap-8 animate-fade-in-up">
       {/* Hero */}
@@ -97,17 +115,24 @@ export default async function Home() {
         </p>
       </div>
 
-      {contributions && (
+      {github && (
         <div>
-          <h2 className="text-[14px] font-semibold uppercase tracking-wider text-muted">
-            GitHub
-          </h2>
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            <h2 className="text-[14px] font-semibold uppercase tracking-wider text-muted">
+              GitHub
+            </h2>
+            <p className="text-[12px] text-muted sm:text-[13px]">
+              {github.totalContributions.toLocaleString("en-US")} contributions in {github.year}
+            </p>
+          </div>
           <div className="mt-3">
             <ContributionGraph
-              totalContributions={contributions.totalContributions}
-              weeks={contributions.weeks}
-              currentWeek={contributions.currentWeek}
+              totalContributions={github.totalContributions}
+              weeks={github.weeks}
+              currentWeek={github.currentWeek}
               profileUrl="https://github.com/amo95"
+              stats={github.stats}
+              live={github.live}
             />
           </div>
         </div>

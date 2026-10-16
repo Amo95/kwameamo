@@ -43,6 +43,9 @@ export async function fetchContributions(username: string): Promise<Contribution
   }
 
   try {
+    // Round "to" down to the hour so the request body, and so the fetch cache key, is stable.
+    const now = new Date();
+    const to = new Date(Math.floor(now.getTime() / 3600000) * 3600000);
     const response = await fetch(GITHUB_GRAPHQL_URL, {
       method: "POST",
       headers: {
@@ -53,11 +56,11 @@ export async function fetchContributions(username: string): Promise<Contribution
         query: CONTRIBUTIONS_QUERY,
         variables: {
           username,
-          from: `${new Date().getFullYear()}-01-01T00:00:00Z`,
-          to: new Date().toISOString(),
+          from: `${now.getUTCFullYear()}-01-01T00:00:00Z`,
+          to: to.toISOString(),
         },
       }),
-      next: { revalidate: 86400 },
+      next: { revalidate: 3600 },
     });
 
     if (!response.ok) {
