@@ -24,6 +24,8 @@ export default function Navigation() {
   const pathname = usePathname();
   // The menu counts as open only on the page it was opened on, so navigating closes it.
   const [openOn, setOpenOn] = useState<string | null>(null);
+  // Forget a menu opened on another page, so Back then Forward does not reopen it.
+  if (openOn !== null && openOn !== pathname) setOpenOn(null);
   const menuOpen = openOn === pathname;
   const close = () => setOpenOn(null);
 
@@ -50,7 +52,7 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
+      <nav className="sticky top-0 z-[56] border-b border-border bg-background/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
           <Link
             href="/"
@@ -105,7 +107,7 @@ export default function Navigation() {
       {menuOpen && (
         <div
           id="mobile-menu"
-          className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-background px-4 pb-8 pt-24 sm:hidden"
+          className="fixed inset-0 z-[55] flex flex-col overflow-y-auto overscroll-contain bg-background px-4 pb-8 pt-24 sm:hidden"
         >
           <div className="flex flex-col gap-1.5">
             {links.map((link, i) => (
@@ -126,14 +128,14 @@ export default function Navigation() {
             ))}
           </div>
 
-          <div className="mt-auto flex gap-5 border-t border-border pt-5 text-[13px] text-muted">
+          <div className="mt-auto flex gap-5 border-t border-border pt-3 text-[13px] text-muted">
             {socials.map((social) => (
               <Link
                 key={social.label}
                 href={social.href}
                 target={social.href.startsWith("http") ? "_blank" : undefined}
                 rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="transition-colors hover:text-foreground"
+                className="py-2 transition-colors hover:text-foreground"
               >
                 {social.label}
               </Link>
