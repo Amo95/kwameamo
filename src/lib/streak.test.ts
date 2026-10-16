@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import type { ContributionWeek } from "@/lib/github";
-import { streakStats } from "./streak.ts";
+import { showsStreakIntro, streakStats } from "./streak.ts";
 
 const DAY = 86400000;
 
@@ -124,4 +124,12 @@ test("stale data: last data day is not today, so no skip", () => {
   const counts = [...ones(5), 0];
   const stats = streakStats(calendar("2026-10-09", counts), "2026-10-15");
   assert.equal(stats.current, 0);
+});
+
+test("intro shows from a 2-day streak", () => {
+  const stats = (current: number) => ({ current, best: current, weeks: 0, activeDays: current, runStart: null });
+  assert.equal(showsStreakIntro(stats(2)), true);
+  assert.equal(showsStreakIntro(stats(1)), false);
+  assert.equal(showsStreakIntro(stats(0)), false);
+  assert.equal(showsStreakIntro(stats(34)), true);
 });
