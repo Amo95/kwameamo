@@ -7,13 +7,15 @@ export interface Work {
   current: boolean;
   logo?: string;
   href?: string;
+  /** A contract done as an engineer of this employer (shown under it). */
+  via?: string;
   description: string[];
 }
 
 export const work: Work[] = [
   {
     company: "Turntabl",
-    role: "Software Engineer",
+    role: "Full-time",
     period: "2020 - Present",
     current: true,
     logo: "/logos/turntabl.png",
@@ -22,6 +24,7 @@ export const work: Work[] = [
   },
   {
     company: "Tunic Pay",
+    via: "Turntabl",
     logo: "/logos/tunicpay.png",
     href: "https://tunicpay.com",
     role: "Backend Software Engineer",
@@ -48,6 +51,7 @@ export const work: Work[] = [
   },
   {
     company: "Morgan Stanley",
+    via: "Turntabl",
     logo: "/logos/morganstanley.png",
     href: "https://www.morganstanley.com",
     role: "Contingent Software Engineer",
