@@ -61,7 +61,8 @@ export default async function Home() {
         <div id="now" className="border-t border-border pt-8">
           <h2 className={H2}>Now</h2>
           <Prose>
-            Most recently at <CompanyRef name="Tunic Pay" href="https://tunicpay.com" logo="/logos/tunicpay.png" /> I
+            I work at <CompanyRef name="Turntabl" href="https://turntabl.io" logo="/logos/turntabl.png" />, where I&apos;ve
+            been since 2020. Most recently at <CompanyRef name="Tunic Pay" href="https://tunicpay.com" logo="/logos/tunicpay.png" /> I
             built async step-up for partner banks and led the team that made fraud check results stream in, cutting
             about 90% of the wait for first results. Before that I spent nearly four years at{" "}
             <CompanyRef name="Morgan Stanley" href="https://www.morganstanley.com" logo="/logos/morganstanley.png" />{" "}
