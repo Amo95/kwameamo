@@ -149,6 +149,17 @@ html.intro-seen .streak-intro:not([data-open]) {
   }
 }
 
+/* Mobile menu links fade up one after another; delays are set inline */
+.menu-link {
+  animation: fadeInUp 0.35s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-link {
+    animation: none;
+  }
+}
+
 @layer components {
   .nav-link {
     position: relative;
