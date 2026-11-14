@@ -1,15 +1,20 @@
-import type { Metadata } from "next";
-import ExperienceItem from "@/components/ExperienceItem";
+// Where I've worked, newest first. The home page's Work list shows these; the full CV has more.
+export interface Work {
+  company: string;
+  role: string;
+  /** "Dec 2025 - Oct 2026" or "2025 - Present". */
+  period: string;
+  current: boolean;
+  logo?: string;
+  href?: string;
+  description: string[];
+}
 
-export const metadata: Metadata = {
-  title: "Experience - James Kwame Amo",
-  description:
-    "Professional experience in fintech, investment banking, and software engineering.",
-};
-
-const experiences = [
+export const work: Work[] = [
   {
     company: "Tunic Pay",
+    logo: "/logos/tunicpay.png",
+    href: "https://tunicpay.com",
     role: "Backend Software Engineer",
     period: "Dec 2025 - Oct 2026",
     current: false,
@@ -34,6 +39,8 @@ const experiences = [
   },
   {
     company: "Morgan Stanley",
+    logo: "/logos/morganstanley.png",
+    href: "https://www.morganstanley.com",
     role: "Contingent Software Engineer",
     period: "Feb 2021 - Dec 2025",
     current: false,
@@ -46,6 +53,8 @@ const experiences = [
   },
   {
     company: "Infusi Technologies ltd",
+    logo: "/logos/infusi.png",
+    href: "https://github.com/infusi-gh",
     role: "Co-Founder & Lead Backend Engineer",
     period: "2025 - Present",
     current: true,
@@ -57,26 +66,8 @@ const experiences = [
   },
 ];
 
-export default function Experience() {
-  return (
-    <section className="flex flex-col gap-6 sm:gap-8 animate-fade-in-up">
-      <h1 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl lg:text-3xl">
-        Experience
-      </h1>
-
-      <div className="flex flex-col">
-        {experiences.map((exp, index) => (
-          <ExperienceItem
-            key={exp.company}
-            company={exp.company}
-            role={exp.role}
-            period={exp.period}
-            description={exp.description}
-            current={exp.current}
-            index={index}
-          />
-        ))}
-      </div>
-    </section>
-  );
+/** "Dec 2025 - Oct 2026" as "2025 - 2026", "2025 - Present" as "2025 - now", a single year once. */
+export function years(period: string): string {
+  const [from, to] = period.split(" - ").map((p) => (p === "Present" ? "now" : p.slice(-4)));
+  return !to || from === to ? from : `${from} - ${to}`;
 }

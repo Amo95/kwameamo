@@ -4,7 +4,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --font-sans: var(--font-inter);
+  --font-sans: "Satoshi", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 @theme {
@@ -44,7 +44,7 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-family: "Satoshi", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
@@ -162,17 +162,6 @@ html.intro-seen .streak-intro:not([data-open]) {
 @layer utilities {
   .animate-fade-in-up {
     animation: fadeInUp 0.4s ease-out forwards;
-  }
-}
-
-/* Mobile menu links fade up one after another; delays are set inline */
-.menu-link {
-  animation: fadeInUp 0.35s ease-out both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .menu-link {
-    animation: none;
   }
 }
 

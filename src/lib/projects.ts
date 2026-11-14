@@ -4,8 +4,10 @@ export interface Project {
   title: string;
   /** One line under the title in the details: what it is and what it's built with. */
   kind?: string;
-  /** One sentence for the hover preview. */
+  /** One sentence for the hover preview and the Projects list. */
   short?: string;
+  /** What kind of thing it is, for the Projects list. */
+  tag?: string;
   description: string;
   tech: string[];
   features?: string[];
@@ -17,6 +19,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     slug: "oncall",
+    tag: "Product",
     title: "Oncall",
     kind: "Product · Spring Boot and Next.js",
     short: "On-call and incident management for teams in Africa.",
@@ -34,6 +37,7 @@ export const projects: Project[] = [
   },
   {
     slug: "swipefile",
+    tag: "Tool",
     title: "Swipe File",
     kind: "Design study tool · Next.js",
     short: "Turns designers' posts on X into design breakdowns.",
@@ -50,6 +54,7 @@ export const projects: Project[] = [
   },
   {
     slug: "devkit",
+    tag: "Tool",
     title: "dev-kit",
     kind: "Developer tooling · Claude Code plugin",
     short: "My Claude Code setup, installable on any machine.",
@@ -66,6 +71,7 @@ export const projects: Project[] = [
   },
   {
     slug: "showup",
+    tag: "Mobile app",
     title: "ShowUp",
     kind: "Mobile app · Flutter",
     short: "A habit tracker that checks you in when you arrive.",
@@ -83,6 +89,7 @@ export const projects: Project[] = [
   },
   {
     slug: "supawake",
+    tag: "CLI",
     title: "SupaWake",
     kind: "Developer tool · Node.js",
     short: "Keeps free Supabase databases from pausing.",
@@ -100,6 +107,7 @@ export const projects: Project[] = [
   },
   {
     slug: "invoica",
+    tag: "Web app",
     title: "Invoica",
     kind: "Web app · Next.js",
     short: "Invoices for freelancers, no account needed.",
@@ -117,6 +125,7 @@ export const projects: Project[] = [
   },
   {
     slug: "spiidi",
+    tag: "Client",
     title: "Spiidi AI",
     kind: "Client product · end to end",
     short: "An AI tutor, built end to end for a client.",
@@ -148,6 +157,8 @@ export const projects: Project[] = [
   },
   {
     title: "Logiciel Loans - WhatsApp Flow Integration",
+    tag: "Client",
+    short: "Apply for and manage loans through WhatsApp.",
     description:
       "WhatsApp Flow integration for loan management API, enabling customers to apply for and manage loans through WhatsApp's conversational interface.",
     tech: ["Spring Boot", "WhatsApp Business API", "PostgreSQL"],
@@ -160,6 +171,8 @@ export const projects: Project[] = [
   },
   {
     title: "Anyigba Land Security Platform",
+    tag: "Product",
+    short: "Property verification against land fraud in Ghana.",
     description:
       "A property verification system addressing land fraud in Ghana's real estate sector. Provides secure document management, role-based access control, and automated workflows for property transactions.",
     tech: ["Spring Boot", "PostgreSQL", "React", "Railway"],
@@ -173,6 +186,8 @@ export const projects: Project[] = [
   },
   {
     title: "cedAI",
+    tag: "Mobile app",
+    short: "Banknote recognition for visually impaired users.",
     description:
       "A mobile currency recognition application designed to help visually impaired users identify banknotes. Developed as a final year thesis project, achieving 99.5% mAP50 accuracy.",
     tech: ["Flutter", "TensorFlow Lite", "YOLO", "Dart"],
@@ -186,6 +201,8 @@ export const projects: Project[] = [
   },
   {
     title: "GMoney Middleware",
+    tag: "Client",
+    short: "Payments across providers in Ghana.",
     description:
       "A payment orchestration layer powering peer-to-peer transfers, bank-to-wallet flows, and interbank settlements across multiple payment providers in Ghana.",
     tech: ["Java", "Spring Boot", "AWS", "PostgreSQL", "CloudWatch"],
