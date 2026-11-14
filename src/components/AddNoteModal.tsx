@@ -49,7 +49,7 @@ export default function AddNoteModal({ onClose }: AddNoteModalProps) {
   };
 
   const field =
-    "min-h-[44px] w-full rounded-xl border border-border bg-background px-3 py-2.5 text-[14px] text-foreground placeholder-muted focus:border-foreground focus:outline-none";
+    "min-h-[44px] w-full rounded-xl bg-panel px-3 py-2.5 text-[14px] text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-foreground/20";
 
   return (
     <div
@@ -60,7 +60,7 @@ export default function AddNoteModal({ onClose }: AddNoteModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="add-note-title"
-        className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-border bg-background p-5 shadow-xl sm:p-6 max-sm:rounded-b-none max-sm:border-b-0"
+        className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-background p-5 shadow-xl sm:p-6 max-sm:rounded-b-none"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-start justify-between gap-4">
@@ -71,7 +71,7 @@ export default function AddNoteModal({ onClose }: AddNoteModalProps) {
           <button
             type="button"
             onClick={onClose}
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-border hover:text-foreground"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-panel hover:text-foreground"
             aria-label="Close"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -115,7 +115,7 @@ export default function AddNoteModal({ onClose }: AddNoteModalProps) {
                     onClick={() => setAvatar(seed)}
                     aria-pressed={avatar === seed}
                     aria-label={`Avatar ${i + 1}`}
-                    className={`h-10 w-10 overflow-hidden rounded-full border-2 transition-transform ${avatar === seed ? "scale-110 border-foreground" : "border-border hover:scale-105"}`}
+                    className={`h-10 w-10 overflow-hidden rounded-full bg-panel transition-transform ${avatar === seed ? "scale-110 ring-2 ring-foreground ring-offset-2 ring-offset-background" : "hover:scale-105"}`}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={`https://api.navii.dev/avatar/${seed}?size=40`} alt="" className="h-full w-full" />

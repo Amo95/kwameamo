@@ -11,20 +11,12 @@ function initials(name: string): string {
 export default function WorkList() {
   const roles = work.filter((w) => !w.via).sort((a, b) => Number(b.current) - Number(a.current));
   return (
-    <div className="mt-3 border-t border-border">
-      {roles.map((w) => {
-        const contracts = work.filter((c) => c.via === w.company);
-        return (
-          <div key={w.company}>
-            <Role w={w} />
-            {contracts.length > 0 && (
-              <div className="ml-[13px] border-l border-border pl-[23px]">
-                {contracts.map((c) => <Role key={c.company} w={c} contract />)}
-              </div>
-            )}
-          </div>
-        );
-      })}
+    // Grey bands with small gaps (Swipe File's table): the outer corners round, no lines.
+    <div className="mt-3 flex flex-col gap-1.5 overflow-hidden rounded-3xl">
+      {roles.flatMap((w) => [
+        <Role key={w.company} w={w} />,
+        ...work.filter((c) => c.via === w.company).map((c) => <Role key={c.company} w={c} contract />),
+      ])}
     </div>
   );
 }
@@ -34,9 +26,9 @@ function Role({ w, contract = false }: { w: Work; contract?: boolean }) {
     <>
       {w.logo ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={w.logo} alt="" className="h-7 w-7 rounded-full object-cover ring-1 ring-border" />
+        <img src={w.logo} alt="" className="h-7 w-7 rounded-full object-cover" />
       ) : (
-        <span aria-hidden="true" className="grid h-7 w-7 place-items-center rounded-full bg-foreground/[0.07] text-[10px] font-semibold text-muted">
+        <span aria-hidden="true" className="grid h-7 w-7 place-items-center rounded-full bg-panel-2 text-[10px] font-semibold text-muted">
           {initials(w.company)}
         </span>
       )}
@@ -50,14 +42,15 @@ function Role({ w, contract = false }: { w: Work; contract?: boolean }) {
       ) : <span />}
     </>
   );
-  const grid = "grid grid-cols-[28px_minmax(0,1fr)_auto_14px] items-center gap-3 py-3";
+  // Contracts sit indented under their employer.
+  const grid = `grid grid-cols-[28px_minmax(0,1fr)_auto_14px] items-center gap-3 py-3.5 pr-4 ${contract ? "pl-9 sm:pl-14" : "pl-4 sm:pl-5"}`;
   // A role without highlights is a plain row; the others open on click.
   return w.description.length === 0 ? (
-    <div className={`${grid} border-b border-border`}>{row}</div>
+    <div className={`${grid} bg-panel`}>{row}</div>
   ) : (
-    <details className="group border-b border-border">
-      <summary className={`${grid} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>{row}</summary>
-      <ul className="mb-4 ml-10 list-disc space-y-1.5 pl-4 text-[14px] leading-relaxed text-muted">
+    <details className="group bg-panel">
+      <summary className={`${grid} cursor-pointer list-none transition-colors hover:bg-panel-2 [&::-webkit-details-marker]:hidden`}>{row}</summary>
+      <ul className={`list-disc space-y-1.5 pb-4 pr-5 text-[14px] leading-relaxed text-muted ${contract ? "ml-[76px] sm:ml-24" : "ml-14 sm:ml-[60px]"}`}>
         {w.description.map((d) => <li key={d}>{d}</li>)}
       </ul>
     </details>

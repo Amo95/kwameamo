@@ -9,7 +9,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="flex h-11 w-11 items-center justify-center rounded-md transition-colors hover:bg-border sm:h-auto sm:w-auto sm:p-2"
+      className="flex h-11 w-11 items-center justify-center rounded-md transition-colors hover:bg-panel sm:h-auto sm:w-auto sm:p-2"
       aria-label="Toggle theme"
     >
       <svg

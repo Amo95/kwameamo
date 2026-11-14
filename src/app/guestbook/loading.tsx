@@ -9,7 +9,7 @@ export default function GuestbookLoading() {
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="rounded-lg border border-border p-4 sm:p-5">
+          <div key={i} className="rounded-lg bg-panel p-4 sm:p-5">
             <Skeleton className="h-4 w-3/4" />
             <Skeleton className="mt-2 h-3 w-full" />
             <Skeleton className="mt-1.5 h-3 w-5/6" />

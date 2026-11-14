@@ -14,20 +14,20 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
   const close = useCallback(() => setOpen(null), []);
   return (
     <>
-      <ul className="border-t border-border">
+      <ul className="flex flex-col gap-1.5 overflow-hidden rounded-3xl">
         {projects.map((p) => (
-          <li key={p.title} className="border-b border-border">
+          <li key={p.title} className="bg-panel">
             <button
               type="button"
               onClick={() => setOpen(p)}
               aria-haspopup="dialog"
-              className="group grid w-full grid-cols-[44px_minmax(0,1fr)_auto] items-center gap-3.5 px-1 py-3 text-left transition-colors hover:bg-foreground/[0.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:gap-4"
+              className="group grid w-full grid-cols-[44px_minmax(0,1fr)_auto] items-center gap-3.5 px-4 py-3.5 text-left transition-colors hover:bg-panel-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent sm:gap-4 sm:px-5"
             >
               {p.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={p.image} alt="" className="h-11 w-11 rounded-full object-cover object-top ring-1 ring-border" />
+                <img src={p.image} alt="" className="h-11 w-11 rounded-full object-cover object-top" />
               ) : (
-                <span aria-hidden="true" className="grid h-11 w-11 place-items-center rounded-full bg-foreground/[0.06] text-[13px] font-semibold text-muted">
+                <span aria-hidden="true" className="grid h-11 w-11 place-items-center rounded-full bg-panel-2 text-[13px] font-semibold text-muted">
                   {initials(p.title)}
                 </span>
               )}

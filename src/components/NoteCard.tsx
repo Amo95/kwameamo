@@ -32,9 +32,7 @@ export default function NoteCard({
 }) {
   return (
     <article
-      className={`relative rounded-md px-4 pb-3.5 pt-[18px] text-[var(--note-ink)] shadow-[0_10px_24px_-14px_rgba(0,0,0,0.35)] transition-transform duration-200 ease-[cubic-bezier(.23,1,.32,1)] hover:-translate-y-[3px] hover:!rotate-0 motion-reduce:transition-none dark:shadow-[0_10px_24px_-14px_rgba(0,0,0,0.9)]${
-        pinned ? " outline-2 -outline-offset-[7px] outline-dashed outline-[color-mix(in_srgb,var(--note-ink)_30%,transparent)]" : ""
-      }`}
+      className={`relative rounded-md px-4 pb-3.5 pt-[18px] text-[var(--note-ink)] shadow-[0_10px_24px_-14px_rgba(0,0,0,0.35)] transition-transform duration-200 ease-[cubic-bezier(.23,1,.32,1)] hover:-translate-y-[3px] hover:!rotate-0 motion-reduce:transition-none dark:shadow-[0_10px_24px_-14px_rgba(0,0,0,0.9)]`}
       style={{ backgroundColor: noteColour(colour), rotate: `${rotation}deg` }}
     >
       {/* Tape */}

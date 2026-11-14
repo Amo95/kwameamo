@@ -36,13 +36,13 @@ export default async function GuestbookPage() {
           </p>
           {notes.length > 0 && (
             <p className="mt-3.5 flex flex-wrap justify-center gap-2 text-[12.5px] text-muted">
-              <span className="rounded-full border border-border px-3 py-1">
+              <span className="rounded-full bg-panel px-3 py-1">
                 <b className="font-semibold text-foreground">{notes.length.toLocaleString("en-US")}</b> {notes.length === 1 ? "note" : "notes"}
               </span>
-              <span className="rounded-full border border-border px-3 py-1">
+              <span className="rounded-full bg-panel px-3 py-1">
                 <b className="font-semibold text-foreground">{reactions.toLocaleString("en-US")}</b> {reactions === 1 ? "reaction" : "reactions"}
               </span>
-              <span className="rounded-full border border-border px-3 py-1">Newest first</span>
+              <span className="rounded-full bg-panel px-3 py-1">Newest first</span>
             </p>
           )}
         </div>

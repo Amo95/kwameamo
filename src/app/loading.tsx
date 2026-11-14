@@ -22,7 +22,7 @@ export default function HomeLoading() {
       </div>
 
       {/* Currently */}
-      <div className="mt-2 sm:mt-4 border-t border-border pt-6 sm:pt-8">
+      <div className="mt-2 sm:mt-4">
         <Skeleton className="h-4 w-28" />
         <Skeleton className="mt-3 h-4 w-full" />
         <Skeleton className="mt-2 h-4 w-5/6" />

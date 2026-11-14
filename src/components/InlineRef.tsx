@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 // A name inside running text: a round picture and the name on a soft pill. Projects open their details; companies
 // link to their site.
 export const refClass =
-  "group/ref relative mx-px inline cursor-pointer whitespace-nowrap rounded-full bg-foreground/[0.06] py-[3px] pl-[3px] pr-[9px] font-medium text-foreground transition-colors duration-150 hover:bg-foreground/[0.1] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "group/ref relative mx-px inline cursor-pointer whitespace-nowrap rounded-full bg-panel py-[3px] pl-[3px] pr-[9px] font-medium text-foreground transition-colors duration-150 hover:bg-panel-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 export function RefPicture({ src }: { src: string }) {
   return (
@@ -12,7 +12,7 @@ export function RefPicture({ src }: { src: string }) {
     <img
       src={src}
       alt=""
-      className="mr-1.5 inline-block h-[22px] w-[22px] rounded-full object-cover align-[-6px] ring-1 ring-border ring-offset-[1.5px] ring-offset-background transition-transform duration-200 ease-[cubic-bezier(.23,1,.32,1)] group-hover/ref:scale-110 motion-reduce:transition-none"
+      className="mr-1.5 inline-block h-[22px] w-[22px] rounded-full object-cover align-[-6px] transition-transform duration-200 ease-[cubic-bezier(.23,1,.32,1)] group-hover/ref:scale-110 motion-reduce:transition-none"
     />
   );
 }

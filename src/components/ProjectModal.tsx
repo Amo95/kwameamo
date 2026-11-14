@@ -51,7 +51,7 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
         role="dialog"
         aria-modal="true"
         aria-labelledby="project-title"
-        className={`flex max-h-[min(86vh,760px)] w-full max-w-[560px] flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-[0_18px_50px_-18px_rgba(0,0,0,0.35)] transition-transform duration-300 ease-[cubic-bezier(.23,1,.32,1)] motion-reduce:transition-none max-sm:max-h-[88vh] max-sm:max-w-none max-sm:rounded-b-none max-sm:border-b-0 ${shown ? "translate-y-0 scale-100" : "translate-y-2.5 scale-[.98] max-sm:translate-y-10 max-sm:scale-100"}`}
+        className={`flex max-h-[min(86vh,760px)] w-full max-w-[560px] flex-col overflow-hidden rounded-3xl bg-background shadow-[0_18px_50px_-18px_rgba(0,0,0,0.35)] transition-transform duration-300 ease-[cubic-bezier(.23,1,.32,1)] motion-reduce:transition-none max-sm:max-h-[88vh] max-sm:max-w-none max-sm:rounded-b-none ${shown ? "translate-y-0 scale-100" : "translate-y-2.5 scale-[.98] max-sm:translate-y-10 max-sm:scale-100"}`}
       >
         <div className="overflow-y-auto overscroll-contain">
           <div className="relative">
@@ -82,21 +82,21 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
             <p className="mt-3.5 text-[14.5px] leading-relaxed text-muted">{project.description}</p>
             {project.features && project.features.length > 0 && (
               <>
-                <h3 className="mb-2 mt-5 text-[12px] font-semibold uppercase tracking-wider text-muted">What it does</h3>
+                <h3 className="mb-2 mt-5 font-mono text-[11.5px] font-medium uppercase tracking-[0.08em] text-muted">What it does</h3>
                 <ul className="list-disc pl-[18px] text-[14px] leading-7 text-foreground">
                   {project.features.map((f) => <li key={f}>{f}</li>)}
                 </ul>
               </>
             )}
-            <h3 className="mb-2 mt-5 text-[12px] font-semibold uppercase tracking-wider text-muted">Built with</h3>
+            <h3 className="mb-2 mt-5 font-mono text-[11.5px] font-medium uppercase tracking-[0.08em] text-muted">Built with</h3>
             <div className="flex flex-wrap gap-1.5">
               {project.tech.map((t) => (
-                <span key={t} className="rounded-full border border-border px-2.5 py-[3px] text-[12px] text-muted">{t}</span>
+                <span key={t} className="rounded-full bg-panel px-2.5 py-[3px] text-[12px] text-muted">{t}</span>
               ))}
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-end gap-2.5 border-t border-border px-[22px] py-3.5 pb-[max(14px,env(safe-area-inset-bottom))]">
+        <div className="flex items-center justify-end gap-2.5 px-[22px] py-3.5 pb-[max(14px,env(safe-area-inset-bottom))]">
           <span className="mr-auto text-[12px] text-muted max-sm:hidden">
             {project.link ? "Scroll for more, or open it." : "Private for now."}
           </span>
@@ -104,7 +104,7 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
             type="button"
             onClick={onClose}
             data-autofocus={project.link ? undefined : ""}
-            className="inline-flex h-10 items-center rounded-full border border-border px-[18px] text-[14px] font-medium text-foreground transition-colors hover:bg-foreground/[0.05] max-sm:h-[46px] max-sm:flex-1 max-sm:justify-center"
+            className="inline-flex h-10 items-center rounded-full bg-panel px-[18px] text-[14px] font-medium text-foreground transition-colors hover:bg-panel-2 max-sm:h-[46px] max-sm:flex-1 max-sm:justify-center"
           >
             Close
           </button>

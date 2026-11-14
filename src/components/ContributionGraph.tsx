@@ -138,7 +138,7 @@ function Milestones({ best }: { best: number }) {
       {milestones(best).map((m) => (
         <li
           key={m.days}
-          className="rounded-2xl border border-border px-1.5 pb-2.5 pt-3 text-center"
+          className="rounded-2xl bg-panel px-1.5 pb-2.5 pt-3 text-center"
           aria-label={`${m.days} days: ${m.earned ? "earned" : m.next ? `${m.left} more days` : "locked"}`}
         >
           <span className={`mx-auto mb-1.5 block h-8 w-8${m.earned ? "" : " opacity-30 grayscale"}`} style={tierStyle(starTier(m.days))}>
@@ -275,7 +275,7 @@ export default function ContributionGraph({
             <><span aria-hidden="true" className="mr-1.5 inline-block h-2.5 w-2.5 rounded-[2px] bg-[var(--contrib-run)] align-[-1px]" />The current run, in gold</>
           ) : null}
         </p>
-        <div role="group" aria-label="Grid view" className="inline-flex rounded-full bg-foreground/[0.06] p-[3px]">
+        <div role="group" aria-label="Grid view" className="inline-flex rounded-full bg-panel p-[3px] shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-panel)_55%,transparent)]">
           {(["3d", "flat"] as const).map((v) => (
             <button
               key={v}
@@ -319,7 +319,7 @@ export default function ContributionGraph({
           <p className="flex items-center gap-2">
             <span className="h-[7px] w-[7px] shrink-0 rounded-full bg-green-500 ring-[3px] ring-green-500/20" aria-hidden="true" />
             <span className="text-muted">Building</span>
-            <span className="rounded-md border border-border px-[7px] leading-snug text-foreground">{live.name}</span>
+            <span className="rounded-md bg-panel px-[7px] leading-snug text-foreground">{live.name}</span>
             <span className="text-muted">{live.ago}</span>
           </p>
         )}

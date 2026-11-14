@@ -27,7 +27,7 @@ async function loadGitHub() {
   };
 }
 
-const H2 = "text-[13px] font-semibold uppercase tracking-wider text-muted";
+const H2 = "font-mono text-[11.5px] font-medium uppercase tracking-[0.08em] text-muted";
 const QUIET_LINK = "text-muted transition-colors hover:text-foreground";
 
 export default async function Home() {
@@ -47,7 +47,7 @@ export default async function Home() {
             Building scalable systems in fintech and investment banking.
           </p>
           <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13.5px]">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-muted">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-panel px-3 py-1 text-muted">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500" />
               Accra, Ghana · {badgeText}
             </span>
@@ -58,7 +58,7 @@ export default async function Home() {
         </header>
 
         {/* What I do now, in words: companies open their site, projects open their details. */}
-        <div id="now" className="border-t border-border pt-8">
+        <div id="now">
           <h2 className={H2}>Now</h2>
           <Prose>
             I&apos;ve been a full-time engineer at{" "}
@@ -116,14 +116,14 @@ export default async function Home() {
         {posts.length > 0 && (
           <div id="writing">
             <h2 className={H2}>Writing</h2>
-            <ul className="mt-3 border-t border-border">
+            <ul className="mt-3 flex flex-col gap-1.5 overflow-hidden rounded-3xl">
               {posts.map((post) => (
-                <li key={post.link} className="border-b border-border">
+                <li key={post.link} className="bg-panel">
                   <Link
                     href={post.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-baseline justify-between gap-4 py-3 text-[14.5px] text-foreground transition-colors hover:text-muted"
+                    className="flex items-baseline justify-between gap-4 px-5 py-4 text-[14.5px] text-foreground transition-colors hover:bg-panel-2"
                   >
                     <span className="min-w-0">{post.title}</span>
                     <span className="shrink-0 text-[12.5px] text-muted">{post.date} &#8599;</span>
@@ -135,7 +135,7 @@ export default async function Home() {
         )}
 
         {/* How to reach me */}
-        <div id="contact" className="border-t border-border pt-8">
+        <div id="contact" className="rounded-[28px] bg-panel p-6 sm:p-8">
           <p className="text-[22px] font-semibold tracking-tight text-foreground">Say hi.</p>
           <p className="mt-1 text-[15px] text-muted">
             Open to conversations about backend engineering, fintech and new roles.
