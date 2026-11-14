@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import StreakStar from "@/components/StreakStar";
+import StreakStar, { tierStyle } from "@/components/StreakStar";
+import { starTier } from "@/lib/streak";
 
 const SEEN_KEY = "streak-intro-seen";
 const EXIT_MS = 800;
@@ -35,6 +36,7 @@ function fullyVisible(rect: DOMRect): boolean {
 }
 
 export default function StreakIntro({ days, isBest }: { days: number; isBest: boolean }) {
+  const tier = starTier(days);
   const [phase, setPhase] = useState<"open" | "closing" | "done">("open");
   const dialogRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -85,7 +87,8 @@ export default function StreakIntro({ days, isBest }: { days: number; isBest: bo
         const inView = fullyVisible(to);
         const end = inView ? to : new DOMRect(to.left, innerHeight + DIVE_GAP, to.width, to.height);
         flyer = document.createElement("div");
-        flyer.style.cssText = "position:fixed;z-index:70;pointer-events:none";
+        // Carry the tier colours over, so the star keeps its colour in flight.
+        flyer.style.cssText = `position:fixed;z-index:70;pointer-events:none;${faceRef.current?.getAttribute("style") ?? ""}`;
         flyer.append(svg.cloneNode(true));
         document.body.append(flyer);
         spinnerRef.current?.style.setProperty("visibility", "hidden");
@@ -144,11 +147,11 @@ export default function StreakIntro({ days, isBest }: { days: number; isBest: bo
               className="relative h-full w-full transform-3d animate-[streak-spin_1.8s_cubic-bezier(.2,.75,.25,1)_both] motion-reduce:animate-none motion-reduce:[transform:rotateX(10deg)]"
             >
               {DEPTHS.map((z) => (
-                <div key={z} className="absolute inset-0" style={{ ...SIDE, transform: `translateZ(${z}px)` }}>
+                <div key={z} className="absolute inset-0" style={{ ...SIDE, ...tierStyle(tier, true), transform: `translateZ(${z}px)` }}>
                   <StreakStar className="block h-full w-full" shadow={false} />
                 </div>
               ))}
-              <div ref={faceRef} className="absolute inset-0 [transform:translateZ(0)]">
+              <div ref={faceRef} className="absolute inset-0 [transform:translateZ(0)]" style={tierStyle(tier)}>
                 <StreakStar className="block h-full w-full" />
               </div>
             </div>
@@ -164,7 +167,7 @@ export default function StreakIntro({ days, isBest }: { days: number; isBest: bo
             {`${days}-day streak`}
           </p>
           <p className="-mt-3 text-[15px] text-muted animate-[streak-fade_.5s_ease_.9s_both]">
-            {isBest ? "Coding every day. My longest run this year." : "Coding every day."}
+            {isBest ? "Coding every day. A new best this year." : "Coding every day."}
           </p>
           <p className="text-[13px] text-muted animate-[streak-fade_.6s_ease_1.8s_both]">
             <span className="[@media(hover:none)]:hidden">Click anywhere to enter</span>

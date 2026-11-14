@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import type { ContributionWeek } from "@/lib/github";
-import { showsStreakIntro, streakStats } from "./streak.ts";
+import { milestones, showsStreakIntro, starTier, streakStats } from "./streak.ts";
 
 const DAY = 86400000;
 
@@ -132,4 +132,34 @@ test("intro shows from a 2-day streak", () => {
   assert.equal(showsStreakIntro(stats(1)), false);
   assert.equal(showsStreakIntro(stats(0)), false);
   assert.equal(showsStreakIntro(stats(34)), true);
+});
+
+test("starTier: bronze under a week, silver under a month, gold from 30 days", () => {
+  assert.equal(starTier(2), "bronze");
+  assert.equal(starTier(6), "bronze");
+  assert.equal(starTier(7), "silver");
+  assert.equal(starTier(29), "silver");
+  assert.equal(starTier(30), "gold");
+  assert.equal(starTier(400), "gold");
+});
+
+test("milestones: earned from the best run, the next one shows what is left", () => {
+  const m = milestones(41);
+  assert.deepEqual(m.map((x) => x.days), [3, 7, 30, 100, 365]);
+  assert.deepEqual(m.map((x) => x.earned), [true, true, true, false, false]);
+  const next = m.filter((x) => x.next);
+  assert.equal(next.length, 1);
+  assert.equal(next[0].days, 100);
+  assert.equal(next[0].left, 59);
+  assert.equal(next[0].progress, 0.41);
+});
+
+test("milestones: none earned yet, the first is next; all earned, none is next", () => {
+  const none = milestones(0);
+  assert.equal(none.every((x) => !x.earned), true);
+  assert.equal(none.find((x) => x.next)?.days, 3);
+  assert.equal(none.find((x) => x.next)?.left, 3);
+  const all = milestones(365);
+  assert.equal(all.every((x) => x.earned), true);
+  assert.equal(all.some((x) => x.next), false);
 });

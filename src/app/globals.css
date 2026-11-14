@@ -29,6 +29,15 @@
   --star-5: #a16207;
   --star-edge: #854d0e;
   --intro-backdrop: rgba(255, 255, 255, 0.94);
+  /* Wall notes: pastel paper by day, deep muted paper at night, with ink to match. */
+  --note-yellow: #fdf0a6;
+  --note-pink: #fbd3e1;
+  --note-blue: #cfe3fb;
+  --note-green: #cdeccf;
+  --note-purple: #e3d7fb;
+  --note-ink: #2b2620;
+  /* The current streak on the 3D grid. */
+  --contrib-run: #eab308;
 }
 
 @layer base {
@@ -63,6 +72,13 @@
   --star-5: #ca8a04;
   --star-edge: #a16207;
   --intro-backdrop: rgba(5, 5, 5, 0.94);
+  --note-yellow: #3b3415;
+  --note-pink: #3d1f2b;
+  --note-blue: #1b2c42;
+  --note-green: #1b3322;
+  --note-purple: #2a2242;
+  --note-ink: #f3efe6;
+  --contrib-run: #facc15;
 }
 
 /* Animations */

@@ -12,5 +12,8 @@ export type GuestbookNote = {
   colour: string;
   created_at: string;
   likes: number;
-  avatar: string | null;
+  /** 👋 and 🔥 counts (supabase/2026-11-14-wall-reactions.sql); missing before that runs. */
+  waves?: number;
+  fires?: number;
+  avatar?: string | null;
 };
