@@ -6,6 +6,9 @@ import { displayName, isRecent, timeAgo } from "@/lib/activity";
 import { getLatestActivity } from "@/lib/activity-store";
 import ContributionGraph from "@/components/ContributionGraph";
 import StreakIntro from "@/components/StreakIntro";
+import ProjectRef from "@/components/ProjectRef";
+import { CompanyRef, Prose } from "@/components/InlineRef";
+import { projectBySlug } from "@/lib/projects";
 
 async function loadGitHub() {
   const [contributions, activity] = await Promise.all([fetchContributions("amo95"), getLatestActivity()]);
@@ -80,44 +83,45 @@ export default async function Home() {
           </Link>
         </div>
 
-        {/* Brief intro sections */}
-        <div className="mt-2 sm:mt-4 border-t border-border pt-6 sm:pt-8">
-          <h2 className="text-[14px] font-semibold uppercase tracking-wider text-muted">
-            Recently
-          </h2>
-          <p className="mt-3 text-[15px] leading-relaxed text-muted">
-            At <span className="text-foreground">Tunic Pay</span> I built async
-            step-up for partner banks, rolled out isolated deployments for 8 of
-            them, and led the team that made fraud check results stream in,
-            cutting about 90% of the wait for first results. Mostly Go, with
-            Temporal on GCP.
-          </p>
+        {/* What I do, in words: companies link to their site, projects open their details. */}
+        <div className="mt-2 border-t border-border pt-6 sm:mt-4 sm:pt-8">
+          <h2 className="text-[14px] font-semibold uppercase tracking-wider text-muted">Recently</h2>
+          <Prose>
+            At <CompanyRef name="Tunic Pay" href="https://tunicpay.com" logo="/logos/tunicpay.png" /> I built async
+            step-up for partner banks, rolled out isolated deployments for 8 of them, and led the team that made fraud
+            check results stream in, cutting about 90% of the wait for first results. Mostly Go, with Temporal on GCP.
+          </Prose>
         </div>
 
         <div>
-          <h2 className="text-[14px] font-semibold uppercase tracking-wider text-muted">
-            Previously
-          </h2>
-          <p className="mt-3 text-[15px] leading-relaxed text-muted">
+          <h2 className="text-[14px] font-semibold uppercase tracking-wider text-muted">Previously</h2>
+          <Prose>
             Spent nearly four years at{" "}
-            <span className="text-foreground">Morgan Stanley</span> working on
-            structured equity products, automating confirms generation, building
-            trade reflow tools, and improving developer efficiency across the
-            team.
-          </p>
+            <CompanyRef name="Morgan Stanley" href="https://www.morganstanley.com" logo="/logos/morganstanley.png" />{" "}
+            working on structured equity products, automating confirms generation, building trade reflow tools, and
+            improving developer efficiency across the team.
+          </Prose>
         </div>
 
         <div>
-          <h2 className="text-[14px] font-semibold uppercase tracking-wider text-muted">
-            Side Projects
-          </h2>
-          <p className="mt-3 text-[15px] leading-relaxed text-muted">
-            Co-founded{" "}
-            <span className="text-foreground">Infusi Technologies ltd</span>, a
-            software agency building mobile and web platforms. Our flagship
-            project is the Anyigba Land Security Platform for property
-            verification in Ghana.
-          </p>
+          <h2 className="text-[14px] font-semibold uppercase tracking-wider text-muted">Building</h2>
+          <Prose>
+            I co-founded <CompanyRef name="Infusi Technologies" href="https://github.com/infusi-gh" logo="/logos/infusi.png" />,
+            a software agency for mobile and web. Our main product is <ProjectRef project={projectBySlug("oncall")} />,
+            on-call and incident management that pages engineers by SMS, even on 2G.
+          </Prose>
+          <Prose>
+            On my own I make small products. <ProjectRef project={projectBySlug("showup")} /> checks you in when you
+            arrive at the gym, church or library. <ProjectRef project={projectBySlug("supawake")} /> keeps free
+            Supabase databases from pausing. <ProjectRef project={projectBySlug("invoica")} /> makes invoices with no
+            account needed, and <ProjectRef project={projectBySlug("spiidi")} /> is an AI tutor I built end to end for
+            a client.
+          </Prose>
+          <Prose>
+            For my own work there is <ProjectRef project={projectBySlug("swipefile")} />, which turns designers&apos;
+            posts into design breakdowns to study, and <ProjectRef project={projectBySlug("devkit")} />, the Claude
+            Code setup I use in every project.
+          </Prose>
         </div>
 
         {github && (
