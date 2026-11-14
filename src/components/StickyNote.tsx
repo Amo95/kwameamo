@@ -2,32 +2,32 @@
 
 import { useState, useSyncExternalStore } from "react";
 import type { GuestbookNote } from "@/lib/supabase";
-import { likeNote, unlikeNote } from "@/app/guestbook/actions";
+import { REACTIONS, readReacted, toggleReacted, type ReactionKey, type Reacted } from "@/lib/reactions";
+import { reactToNote } from "@/app/guestbook/actions";
+import NoteCard from "@/components/NoteCard";
 
-const PASTEL_COLORS = {
-  yellow: "bg-yellow-200 dark:bg-yellow-300",
-  pink: "bg-pink-200 dark:bg-pink-300",
-  blue: "bg-blue-200 dark:bg-blue-300",
-  green: "bg-green-200 dark:bg-green-300",
-  purple: "bg-purple-200 dark:bg-purple-300",
-};
-
-// Liked note ids live in localStorage; every note on the page re-reads them when they change.
+// What this browser reacted with lives in localStorage; every note re-reads it when it changes.
+const KEY = "wall-reactions";
+const LEGACY = "liked-notes";
 const listeners = new Set<() => void>();
+let cache: { raw: string | null; legacy: string | null; value: Reacted } | null = null;
 
-function getLikedNotes(): string[] {
+function read(): Reacted {
   try {
-    return JSON.parse(localStorage.getItem("liked-notes") || "[]");
+    const raw = localStorage.getItem(KEY), legacy = localStorage.getItem(LEGACY);
+    if (!cache || cache.raw !== raw || cache.legacy !== legacy) cache = { raw, legacy, value: readReacted(raw, legacy) };
+    return cache.value;
   } catch {
-    return [];
+    return {};
   }
 }
 
-function setLikedNote(noteId: string, liked: boolean) {
-  const ids = getLikedNotes().filter((id) => id !== noteId);
-  if (liked) ids.push(noteId);
-  localStorage.setItem("liked-notes", JSON.stringify(ids));
-  listeners.forEach((listener) => listener());
+function save(next: Reacted) {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(next));
+    localStorage.removeItem(LEGACY);
+  } catch {}
+  listeners.forEach((l) => l());
 }
 
 function subscribe(listener: () => void) {
@@ -39,104 +39,69 @@ function subscribe(listener: () => void) {
   };
 }
 
-interface StickyNoteProps {
-  note: GuestbookNote;
-  rotation: number;
-}
+const EMPTY: Reacted = {};
 
-export default function StickyNote({ note, rotation }: StickyNoteProps) {
-  const liked = useSyncExternalStore(
-    subscribe,
-    () => getLikedNotes().includes(note.id),
-    () => false
-  );
-  const [likeCount, setLikeCount] = useState(note.likes ?? 0);
-  const [animating, setAnimating] = useState(false);
+export default function StickyNote({ note, rotation }: { note: GuestbookNote; rotation: number }) {
+  const reacted = useSyncExternalStore(subscribe, read, () => EMPTY);
+  const mine = reacted[note.id] ?? [];
+  const [counts, setCounts] = useState<Record<ReactionKey, number>>({
+    wave: note.waves ?? 0,
+    heart: note.likes ?? 0,
+    fire: note.fires ?? 0,
+  });
+  const [busy, setBusy] = useState<ReactionKey | null>(null);
 
-  const handleLike = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setAnimating(true);
-    setTimeout(() => setAnimating(false), 300);
-
-    // Update right away, then undo if the server call fails.
-    const next = !liked;
-    setLikedNote(note.id, next);
-    setLikeCount((c) => Math.max(c + (next ? 1 : -1), 0));
-    const result = await (next ? likeNote(note.id) : unlikeNote(note.id));
-    if (result.error) {
-      setLikedNote(note.id, !next);
-      setLikeCount((c) => Math.max(c + (next ? -1 : 1), 0));
+  const react = async (key: ReactionKey) => {
+    if (busy) return;
+    const on = !mine.includes(key);
+    // Show it at once, then settle on the server's count, or undo if it failed.
+    setBusy(key);
+    save(toggleReacted(read(), note.id, key, on));
+    setCounts((c) => ({ ...c, [key]: Math.max(c[key] + (on ? 1 : -1), 0) }));
+    const result = await reactToNote(note.id, key, on);
+    if ("count" in result && typeof result.count === "number") {
+      const count = result.count;
+      setCounts((c) => ({ ...c, [key]: count }));
+    } else {
+      save(toggleReacted(read(), note.id, key, !on));
+      setCounts((c) => ({ ...c, [key]: Math.max(c[key] + (on ? -1 : 1), 0) }));
     }
+    setBusy(null);
   };
 
-  const colorClass =
-    PASTEL_COLORS[note.colour as keyof typeof PASTEL_COLORS] ||
-    PASTEL_COLORS.yellow;
-
-  const date = new Date(note.created_at);
-  const formattedDate = date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  const date = new Date(note.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 
   return (
-    <div
-      className={`group relative h-44 w-full rounded-md p-4 shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl sm:h-48 sm:p-5 ${colorClass}`}
-      style={{ rotate: `${rotation}deg` }}
-    >
-      {/* Note content */}
-      <div className="flex h-full flex-col justify-between">
-        <div>
-          <p className="break-words font-serif text-[14px] leading-relaxed text-gray-800 sm:text-[15px]">
-            {note.message}
-          </p>
+    <NoteCard
+      colour={note.colour}
+      message={note.message}
+      name={note.name}
+      avatar={note.avatar || note.name}
+      date={date}
+      rotation={rotation}
+      actions={
+        <div className="flex gap-1">
+          {REACTIONS.map((r) => {
+            const pressed = mine.includes(r.key);
+            return (
+              <button
+                key={r.key}
+                type="button"
+                onClick={() => react(r.key)}
+                aria-pressed={pressed}
+                aria-label={`${r.label}, ${counts[r.key]}`}
+                className={`h-6 whitespace-nowrap rounded-full px-[7px] text-[12px] tabular-nums transition-[background-color,transform] duration-150 active:scale-95 motion-reduce:transition-none ${
+                  pressed
+                    ? "bg-[color-mix(in_srgb,var(--note-ink)_18%,transparent)] font-semibold"
+                    : "bg-[color-mix(in_srgb,var(--note-ink)_8%,transparent)] hover:bg-[color-mix(in_srgb,var(--note-ink)_13%,transparent)]"
+                }`}
+              >
+                <span aria-hidden="true">{r.emoji}</span> {counts[r.key]}
+              </button>
+            );
+          })}
         </div>
-
-        <div className="flex items-end justify-between">
-          <div className="flex items-center gap-2">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`https://api.navii.dev/avatar/${encodeURIComponent(note.avatar || note.name)}?size=24`}
-              alt=""
-              className="h-6 w-6 shrink-0 rounded-full"
-              loading="lazy"
-            />
-            <div>
-              <p className="text-[12px] font-semibold text-gray-700 sm:text-[13px]">
-                {note.name}
-              </p>
-              <p className="text-[10px] text-gray-600 sm:text-[11px]">{formattedDate}</p>
-            </div>
-          </div>
-
-          <button
-            onClick={handleLike}
-            className={`flex items-center gap-1 transition-transform duration-200 ${
-              "cursor-pointer hover:scale-110"
-            } ${animating ? "scale-125" : ""}`}
-            aria-label={liked ? "Unlike this note" : "Like this note"}
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill={liked ? "#ef4444" : "none"}
-              stroke={liked ? "#ef4444" : "#6b7280"}
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="transition-colors duration-200"
-            >
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-            </svg>
-            <span className="text-[11px] text-gray-600">{likeCount}</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Tape effect at top */}
-      <div className="absolute left-1/2 top-0 h-5 w-12 -translate-x-1/2 -translate-y-2.5 bg-white/40 opacity-60 blur-[1px] sm:h-6 sm:w-16 sm:-translate-y-3" />
-    </div>
+      }
+    />
   );
 }

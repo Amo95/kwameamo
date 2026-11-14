@@ -44,19 +44,6 @@ export function getBadgeText(region: Region): string {
   }
 }
 
-export function getAboutText(region: Region): string {
-  switch (region) {
-    case 'EU':
-      return 'open to relocation opportunities in the European Union';
-    case 'US':
-      return 'open to relocation opportunities in the United States';
-    case 'CA':
-      return 'open to relocation opportunities in Canada';
-    case 'OTHER':
-      return 'open to new opportunities';
-  }
-}
-
 export function getContactText(region: Region): string | null {
   switch (region) {
     case 'EU':

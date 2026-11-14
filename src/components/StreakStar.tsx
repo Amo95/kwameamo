@@ -1,3 +1,6 @@
+import type { CSSProperties } from "react";
+import type { StarTier } from "@/lib/streak";
+
 const CX = 12;
 const CY = 12.6;
 
@@ -33,4 +36,20 @@ export default function StreakStar({ className = "", shadow = true }: { classNam
       />
     </svg>
   );
+}
+
+// Bronze and silver faces, lightest to darkest, plus the edge; gold is the theme's own --star-* colours.
+const TIERS: Record<Exclude<StarTier, "gold">, string[]> = {
+  bronze: ["#f2c79b", "#e0a96d", "#c98a4b", "#a86b33", "#8a5426", "#6e421d"],
+  silver: ["#f8fafc", "#e2e8f0", "#cbd5e1", "#94a3b8", "#64748b", "#475569"],
+};
+
+/** CSS variables that colour a StreakStar for a tier (nothing for gold). `side` gives the darker faces behind it. */
+export function tierStyle(tier: StarTier, side = false): CSSProperties {
+  if (tier === "gold") return {};
+  const c = TIERS[tier];
+  const shade = side ? [c[4], c[4], c[5], c[5], c[5], c[5]] : c;
+  return {
+    "--star-1": shade[0], "--star-2": shade[1], "--star-3": shade[2], "--star-4": shade[3], "--star-5": shade[4], "--star-edge": shade[5],
+  } as CSSProperties;
 }

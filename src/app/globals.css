@@ -4,7 +4,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --font-sans: var(--font-inter);
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-sans: "Satoshi", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 @theme {
@@ -13,6 +14,9 @@
   --color-foreground: #111111;
   --color-muted: #666666;
   --color-border: #e5e5e5;
+  /* Swipe File's flat panels: grey bands and cards with no outline. */
+  --color-panel: #f4f4f3;
+  --color-panel-2: #e7e7e5;
   --color-accent: #1f4e79;
 }
 
@@ -29,13 +33,22 @@
   --star-5: #a16207;
   --star-edge: #854d0e;
   --intro-backdrop: rgba(255, 255, 255, 0.94);
+  /* Wall notes: pastel paper by day, deep muted paper at night, with ink to match. */
+  --note-yellow: #fdf0a6;
+  --note-pink: #fbd3e1;
+  --note-blue: #cfe3fb;
+  --note-green: #cdeccf;
+  --note-purple: #e3d7fb;
+  --note-ink: #2b2620;
+  /* The current streak on the 3D grid. */
+  --contrib-run: #eab308;
 }
 
 @layer base {
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-family: "Satoshi", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
@@ -46,10 +59,12 @@
 }
 
 .dark {
-  --color-background: #0a0a0a;
+  --color-background: #0d0d0e;
   --color-foreground: #f5f5f5;
   --color-muted: #a3a3a3;
   --color-border: #262626;
+  --color-panel: #19191b;
+  --color-panel-2: #2a2a2d;
   --color-accent: #60a5fa;
   --color-contrib-none: #161b22;
   --color-contrib-first_quartile: #0e4429;
@@ -63,6 +78,13 @@
   --star-5: #ca8a04;
   --star-edge: #a16207;
   --intro-backdrop: rgba(5, 5, 5, 0.94);
+  --note-yellow: #3b3415;
+  --note-pink: #3d1f2b;
+  --note-blue: #1b2c42;
+  --note-green: #1b3322;
+  --note-purple: #2a2242;
+  --note-ink: #f3efe6;
+  --contrib-run: #facc15;
 }
 
 /* Animations */
@@ -146,17 +168,6 @@ html.intro-seen .streak-intro:not([data-open]) {
 @layer utilities {
   .animate-fade-in-up {
     animation: fadeInUp 0.4s ease-out forwards;
-  }
-}
-
-/* Mobile menu links fade up one after another; delays are set inline */
-.menu-link {
-  animation: fadeInUp 0.35s ease-out both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .menu-link {
-    animation: none;
   }
 }
 

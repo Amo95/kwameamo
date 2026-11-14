@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { getVisitorRegion, getBadgeText, type Region } from "@/lib/geo";
 
+// Small uppercase labels, as in Swipe File.
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
+
 // Runs before the first paint so dark mode never flashes light.
 const themeScript = `try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`;
 // Hides the streak intro before the first paint once it has played in this tab.
 const introScript = `try{if(sessionStorage.getItem("streak-intro-seen"))document.documentElement.classList.add("intro-seen")}catch(e){}`;
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 function getRegionShortText(region: Region): string {
   switch (region) {
@@ -82,10 +79,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Satoshi, served by Fontshare (its licence allows that, not copies in this public repo). */}
+        <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="" />
+        <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="" />
+        <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: introScript }} />
       </head>
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${geistMono.variable} antialiased`}>
         <Navigation />
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <main className="py-8 sm:py-12 lg:py-16">{children}</main>

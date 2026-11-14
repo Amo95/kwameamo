@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import StickyNote from "@/components/StickyNote";
+import NoteCard from "@/components/NoteCard";
 import AddNoteButton from "@/components/AddNoteButton";
 import { getNotes } from "./actions";
 
@@ -17,6 +18,7 @@ function rotationFor(id: string): number {
 
 export default async function GuestbookPage() {
   const notes = await getNotes();
+  const reactions = notes.reduce((sum, n) => sum + (n.likes ?? 0) + (n.waves ?? 0) + (n.fires ?? 0), 0);
 
   return (
     <>
@@ -32,21 +34,40 @@ export default async function GuestbookPage() {
               👋
             </span>
           </p>
+          {notes.length > 0 && (
+            <p className="mt-3.5 flex flex-wrap justify-center gap-2 text-[12.5px] text-muted">
+              <span className="rounded-full bg-panel px-3 py-1">
+                <b className="font-semibold text-foreground">{notes.length.toLocaleString("en-US")}</b> {notes.length === 1 ? "note" : "notes"}
+              </span>
+              <span className="rounded-full bg-panel px-3 py-1">
+                <b className="font-semibold text-foreground">{reactions.toLocaleString("en-US")}</b> {reactions === 1 ? "reaction" : "reactions"}
+              </span>
+              <span className="rounded-full bg-panel px-3 py-1">Newest first</span>
+            </p>
+          )}
         </div>
 
-        {/* Notes grid */}
-        {notes.length === 0 ? (
-          <div className="py-8 sm:py-12 text-center">
-            <p className="text-[14px] text-muted sm:text-[15px]">
-              No notes yet. Be the first to leave one!
-            </p>
+        {/* Notes: each grows to fit its message; my note stays pinned first. */}
+        <div className="columns-1 gap-6 pt-2 sm:columns-2 lg:columns-3">
+          <div className="mb-6 break-inside-avoid">
+            <NoteCard
+              pinned
+              colour="yellow"
+              message="Thanks for stopping by. Say hi, leave a tip, or tell me what to build next."
+              name="James"
+              avatar="james"
+              date="Pinned"
+              rotation={-1.6}
+            />
           </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-            {notes.map((note) => (
-              <StickyNote key={note.id} note={note} rotation={rotationFor(note.id)} />
-            ))}
-          </div>
+          {notes.map((note) => (
+            <div key={note.id} className="mb-6 break-inside-avoid">
+              <StickyNote note={note} rotation={rotationFor(note.id)} />
+            </div>
+          ))}
+        </div>
+        {notes.length === 0 && (
+          <p className="text-center text-[14px] text-muted sm:text-[15px]">No notes from visitors yet. Be the first to leave one.</p>
         )}
       </section>
 

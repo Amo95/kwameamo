@@ -49,6 +49,12 @@ create table public.guestbook (
 alter table public.guestbook enable row level security;
 ```
 
+## 3b. Reactions and the note limit
+
+Then run `supabase/2026-11-14-wall-reactions.sql` in the **SQL Editor**. It adds the 👋 and 🔥 counters, a
+`react_to_note` function that counts reactions in one statement, and an `ip_hash` column used to limit each visitor
+to 3 notes an hour (a keyed hash, never the IP). Run it before deploying the code that uses it.
+
 ## 4. Get Your API Keys
 
 1. Go to **Project Settings** → **API**
