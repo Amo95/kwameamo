@@ -15,7 +15,7 @@ export interface Work {
 export const work: Work[] = [
   {
     company: "Turntabl",
-    role: "Full-time",
+    role: "Software Engineer",
     period: "2020 - Present",
     current: true,
     logo: "/logos/turntabl.png",
